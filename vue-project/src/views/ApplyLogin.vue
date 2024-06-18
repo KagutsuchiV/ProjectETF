@@ -1,4 +1,4 @@
-<!-- src/views/AboutPage.vue -->
+<!-- src/views/ApplyLogin.vue -->
 <template>
     <div>
       <router-link to="/">回首頁</router-link>
@@ -8,7 +8,7 @@
   
   <script>
   export default {
-    name: 'AboutPage'
+    name: 'ApplyLoginPage'
   }
   </script>
   

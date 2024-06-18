@@ -3,7 +3,8 @@
     <div id="app">
       <nav>
         <router-link to="/"></router-link>
-        <router-link to="/about"></router-link>
+        <router-link to="/Applylogin"></router-link>
+        <router-link to="/Login"></router-link>
       </nav>
       <router-view/>
     </div>
@@ -14,4 +15,7 @@
     name: 'App'
   }
   </script>
+
+<style scoped>
+</style>
   
