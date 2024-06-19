@@ -28,7 +28,7 @@
     <div class="AL">
       <div class="member">會員專區</div>
       <router-link to="/ApplyLogin" class="Apply" @mouseover="ChangeColor" @mouseleave="ReturnColor" :style="Apply">申請帳號</router-link><br/>
-      <router-link to="/ApplyLogin" class="Login" @mouseover="ChangeColorB" @mouseleave="ReturnColorB" :style="Login">前往登入</router-link>
+      <router-link to="/Login" class="Login" @mouseover="ChangeColorB" @mouseleave="ReturnColorB" :style="Login">前往登入</router-link>
     </div>
 
     <SearchComp></SearchComp>

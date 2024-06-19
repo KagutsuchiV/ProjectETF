@@ -8,6 +8,6 @@
   
   <script>
   export default {
-    name: 'ApplyPage'
+    name: 'LoginPage'
   }
   </script>
