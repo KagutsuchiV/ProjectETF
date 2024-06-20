@@ -1,23 +1,89 @@
 <!-- src/views/ApplyLogin.vue -->
+<script setup>
+  import {ref} from "vue";
+  import axios from 'axios';
+
+  // 滑鼠事件
+  let back = ref("background-color: white");
+  let ChangeColor=function(){
+    back.value="background-color: #AAAAAA; font-weight: bold";
+  };
+  let ReturnColor=function(){
+    back.value="background-color: white";
+  };
+
+  // 密碼確認與表單資料
+  const password=ref("");
+  const checkpassword=ref("");
+  const errorMessage=ref("");
+
+  const username=ref("");
+  const account=ref("");
+
+  const submitForm = async () => {
+    if(password.value !== checkpassword.value){
+      errorMessage.value="確認密碼與輸入密碼不相符，請重新輸入!";
+      return;
+    }
+    errorMessage.value="";
+
+    try {
+      const response = await axios.post("http://localhost:3000/submit",{
+        username: username.value,
+        account: account.value,
+        password: password.value,
+      });
+      console.log(response.data);
+      alert("申請成功");
+    } catch(error){
+      console.error(error);
+      errorMessage.value="提交失敗，請稍後再試";
+    }
+  };
+</script>
 <template>
     <div class="package">
       <div class="title">ETF-ERA</div>
       <form  @submit.prevent="submitForm">
-          <div class="contentA">設定暱稱 <input required placeholder="僅限定英文，2至10個字元" pattern="[A-Za-z]*" minlength="2" maxlength="10" /></div>
-          <div class="contentA">設定帳號 <input placeholder="請輸入您的帳號" /></div>
-          <div class="contentA">設定密碼 <input placeholder="請輸入您的密碼" /></div>
-          <div class="contentA">確認密碼 <input placeholder="請再次輸入密碼" /></div>
+          <div class="contentA">設定暱稱 <input v-model="username" required placeholder="僅限定英文，2至10個字元" pattern="[A-Za-z]*" minlength="2" maxlength="10" /></div>
+          <div class="contentA">設定帳號 <input v-model="account" required placeholder="英文or數字，8至16個字元" /></div>
+          <div class="contentA">設定密碼 <input v-model="password" type="password" required placeholder="英文or數字，8至16個字元" /></div>
+          <div class="contentA">確認密碼 <input v-model="checkpassword" type="password" required placeholder="請再次輸入密碼" /></div>
+          <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
           <button type="submit" class="bottonA">申請帳號</button>
       </form>
     </div>
     <div>
-      <router-link to="/" class="back">回首頁</router-link>
+      <router-link to="/" class="back" :style="back" @mouseover="ChangeColor" @mouseleave="ReturnColor">回首頁</router-link>
     </div>
 </template>
   
 <script>
   export default {
-    name: 'ApplyLoginPage'
+    name: 'ApplyLoginPage',
+    // 傳送資料至後端
+    // 下載axios指令: npm install axios vue-axios --save
+    // data(){
+    //   return {
+    //     username: '',
+    //     account: '',
+    //     password: ''
+    //   };
+    // },
+    // methods: {
+    //   async submitForm(){
+    //     try{
+    //       const response = await axios.post('http://localhost:3000/submit',{
+    //         username: this.username,
+    //         account: this.account,
+    //         password: this.password
+    //       });
+    //       console.log(response.data);
+    //     } catch (error){
+    //       console.error(error);
+    //     }
+    //   }
+    // }
   }
 </script>
  <style scoped>
@@ -64,6 +130,12 @@
     top:30px;
     left:165px;
   }
+  .error{
+    color: red;
+    text-align: center;
+    margin-top: 10px;
+    font-weight: bold;
+  }
   .back{
     position: relative;
     left: 48%;
@@ -72,7 +144,6 @@
     color: inherit;
     text-decoration: none;
     font-size: 24px;
-    background-color: #dddddd;
     border-radius: 10px;
     padding: 10px;
     border-style: solid;

@@ -1,11 +1,14 @@
 const express = require('express');
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 const mysql = require('mysql2');
+const cors = require('cors');
 const app = express();
 const port = 3000; // 你可以選擇任何你想要的端口號
 
-// 使用 body-parser 中間軟體來解析 JSON 請求體
-app.use(bodyParser.json());
+// 使用 express 中間軟體來解析 JSON 請求體
+app.use(express.json());
+
+app.use(cors());
 
 // 建立 MySQL 連接池
 const pool = mysql.createPool({
@@ -17,11 +20,11 @@ const pool = mysql.createPool({
 
 // 處理 POST 請求
 app.post('/submit', (req, res) => {
-  const { username, email } = req.body;
+  const { username, account, password } = req.body;
 
   // 插入資料到 MySQL 資料庫
-  const query = 'INSERT INTO users (username, email) VALUES (?, ?)';
-  pool.query(query, [username, email], (err, results) => {
+  const query = 'INSERT INTO users (username, account, password) VALUES (?, ?, ?)';
+  pool.query(query, [username, account, password], (err, results) => {
     if (err) {
       console.error(err);
       res.status(500).json({ message: 'Error inserting data' });
@@ -41,5 +44,5 @@ app.listen(port, () => {
   console.log(`伺服器正在 http://localhost:${port} 上運行`);
 });
 
-const cors = require('cors');
-app.use(cors());
+// const cors = require('cors');
+// app.use(cors());
