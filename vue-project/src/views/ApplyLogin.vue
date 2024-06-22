@@ -61,29 +61,6 @@
 <script>
   export default {
     name: 'ApplyLoginPage',
-    // 傳送資料至後端
-    // 下載axios指令: npm install axios vue-axios --save
-    // data(){
-    //   return {
-    //     username: '',
-    //     account: '',
-    //     password: ''
-    //   };
-    // },
-    // methods: {
-    //   async submitForm(){
-    //     try{
-    //       const response = await axios.post('http://localhost:3000/submit',{
-    //         username: this.username,
-    //         account: this.account,
-    //         password: this.password
-    //       });
-    //       console.log(response.data);
-    //     } catch (error){
-    //       console.error(error);
-    //     }
-    //   }
-    // }
   }
 </script>
  <style scoped>
