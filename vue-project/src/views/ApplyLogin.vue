@@ -2,6 +2,9 @@
 <script setup>
   import {ref} from "vue";
   import axios from 'axios';
+  import { useRouter } from "vue-router";
+
+  const router = useRouter(); // 獲取vue router 實例
 
   // 滑鼠事件
   let back = ref("background-color: white");
@@ -28,13 +31,26 @@
     errorMessage.value="";
 
     try {
+      // 檢查帳號是否已存在
+      const checkResponse = await axios.post("http://localhost:3000/checkAccount", {
+        account: account.value
+      });
+
+      if (checkResponse.data.exists){
+        errorMessage.value="帳號已存在，請創立新的帳號";
+        return;
+      }
+
+      // 提交表單數據
       const response = await axios.post("http://localhost:3000/submit",{
         username: username.value,
         account: account.value,
         password: password.value,
       });
+      
       console.log(response.data);
-      alert("申請成功");
+      alert("申請成功，網頁將自動導引至登入頁面");
+      router.push('/Login'); // 導引至首頁或其他頁面
     } catch(error){
       console.error(error);
       errorMessage.value="提交失敗，請稍後再試";

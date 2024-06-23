@@ -18,6 +18,21 @@ const pool = mysql.createPool({
   database: 'ETF'
 });
 
+// 檢查帳號是否存在
+app.post('/checkAccount',(req, res)=>{
+  const {account} = req.body;
+  const query = 'SELECT COUNT(*) AS count FROM users WHERE account=?';
+  pool.query(query, [account], (err, results) => {
+    if(err){
+      console.error(err);
+      res.status(500).json({ message: 'Database query error'});
+      return;
+    }
+    const exists = results[0].count>0;
+    res.status(200).json({ exists });
+  });
+});
+
 // 處理 POST 請求
 app.post('/submit', (req, res) => {
   const { username, account, password } = req.body;

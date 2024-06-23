@@ -4,6 +4,7 @@ import HomePage from '../views/HomePage.vue'
 import ApplyLoginPage from '../views/ApplyLogin.vue'
 import LoginPage from '../views/Login.vue'
 
+
 const routes = [
   {
     path: '/',
