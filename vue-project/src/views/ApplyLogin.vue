@@ -7,6 +7,14 @@
   const router = useRouter(); // 獲取vue router 實例
 
   // 滑鼠事件
+  let buttonA = ref("background-color: white");
+  let ChangeColorA=function(){
+    buttonA.value="background-color: #AAAAAA; font-weight: bold";
+  };
+  let ReturnColorA=function(){
+    buttonA.value="background-color: white";
+  };
+
   let back = ref("background-color: white");
   let ChangeColor=function(){
     back.value="background-color: #AAAAAA; font-weight: bold";
@@ -62,11 +70,11 @@
       <div class="title">ETF-ERA</div>
       <form  @submit.prevent="submitForm">
           <div class="contentA">設定暱稱 <input v-model="username" required placeholder="僅限定英文，2至10個字元" pattern="[A-Za-z]*" minlength="2" maxlength="10" /></div>
-          <div class="contentA">設定帳號 <input v-model="account" required placeholder="英文or數字，8至16個字元" /></div>
-          <div class="contentA">設定密碼 <input v-model="password" type="password" required placeholder="英文or數字，8至16個字元" /></div>
-          <div class="contentA">確認密碼 <input v-model="checkpassword" type="password" required placeholder="請再次輸入密碼" /></div>
+          <div class="contentA">設定帳號 <input v-model="account" required placeholder="英文or數字，8至16個字元" pattern="[a-zA-Z0-9]{8,16}" /></div>
+          <div class="contentA">設定密碼 <input v-model="password" type="password" required placeholder="英文or數字，8至16個字元" pattern="[a-zA-Z0-9]{8,16}" /></div>
+          <div class="contentA">確認密碼 <input v-model="checkpassword" type="password" required placeholder="請再次輸入密碼" pattern="[a-zA-Z0-9]{8,16}" /></div>
           <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
-          <button type="submit" class="bottonA">申請帳號</button>
+          <button type="submit" class="bottonA" :style="buttonA" @mouseover="ChangeColorA" @mouseleave="ReturnColorA">申請帳號</button>
       </form>
     </div>
     <div>
@@ -122,6 +130,7 @@
     position: relative;
     top:30px;
     left:165px;
+    cursor: pointer; 
   }
   .error{
     color: red;

@@ -1,13 +1,143 @@
 <!-- src/views/ApplyLogin.vue -->
+<script setup>
+  import {ref} from 'vue';
+
+  // 滑鼠事件
+  let buttonA = ref("background-color: white");
+  let ChangeColorA=function(){
+    buttonA.value="background-color: #AAAAAA; font-weight: bold";
+  };
+  let ReturnColorA=function(){
+    buttonA.value="background-color: white";
+  };
+
+  let back = ref("background-color: white");
+  let ChangeColor=function(){
+    back.value="background-color: #AAAAAA; font-weight: bold";
+  };
+  let ReturnColor=function(){
+    back.value="background-color: white";
+  };
+
+  // 表單相關
+  // 驗證碼
+  const captcha = ref('');
+  const usercaptcha = ref('');
+  const captchaError = ref('');
+
+  const generateCaptcha = () => {
+    const chars ='abcdefghijkmnpqrestuvwxyzABCDEFGHIJKLMNPQRSTUVWXYZ0123456789';
+    let result='';
+    for (let i=0; i<4; i++){
+      result += chars.charAt(Math.floor(Math.random()*chars.length));
+    }
+    captcha.value=result;
+  };
+  // 初始驗證碼
+  generateCaptcha();
+
+  // 送出表單與驗證
+  const submitForm = () =>  {
+    if(usercaptcha.value !== captcha.value){
+      captchaError.value = "驗證碼輸入錯誤，請重新輸入";
+      generateCaptcha();
+      return;
+    }
+    captchaError="";
+  }
+
+</script>
+
 <template>
-    <div>
-      <router-link to="/">回首頁</router-link>
-      <h1>登入頁面</h1>
+    <div class="package">
+      <div class="title">ETF-ERA</div>
+      <form @submit.prevent="submitForm">
+          <div class="contentA">帳號:<input v-model="account" required placeholder="請輸入您的帳號" pattern="[a-zA-Z0-9]{8,16}" /></div>
+          <div class="contentA">密碼:<input v-model="password" type="password" required placeholder="請輸入您的密碼" pattern="[a-zA-Z0-9]{8,16}" /></div>
+          <div class="outer"><span class="contentB">驗證碼:<input/></span><span @click="generateCaptcha">{{ captcha }}</span></div>
+          <button type="submit" class="bottonA" :style="buttonA" @mouseover="ChangeColorA" @mouseleave="ReturnColorA">登入會員</button>
+      </form>
     </div>
+    <router-link to="/" class="back" :style="back" @mouseover="ChangeColor" @mouseleave="ReturnColor">回首頁</router-link>
   </template>
   
   <script>
   export default {
     name: 'LoginPage'
   }
-  </script>
+</script>
+
+<style scoped>
+  .package{
+     border-style: double;
+     border-width: 5px;
+     background-color: #dddddd;
+     width: 500px;
+     height: 500px;
+     position: relative;
+     left: 50%;
+     transform: translateX(-50%);
+     top: 100px;
+  }
+  .title{
+      font-weight: bold;
+      font-size: 40px;
+      text-align: center;
+      margin-top: 5px;
+      margin-bottom: 30px;
+  }
+  .contentA{
+    font-size: 24px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px;
+  }
+  .contentA>input{
+    font-size: 16px;
+    margin-left: 5px;
+    height: 36px;
+    border-radius: 10px;
+  }
+  .outer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .contentB{
+    font-size: 24px;
+    font-weight: bold;
+    /* margin: 30px; */
+  }
+  .contentB>input{
+    font-size: 16px;
+    margin-left: 5px;
+    height: 36px;
+    width: 100px;
+    border-radius: 10px;
+  }
+  .bottonA{
+    width: 200px;
+    height: 50px;
+    border-radius: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    position: relative;
+    top:30px;
+    left:165px;
+    cursor: pointer; 
+  }
+  .back{
+     position: relative;
+     left: 48%;
+     transform: translateX(-50%);
+     top: 150px;
+     color: inherit;
+     text-decoration: none;
+     font-size: 24px;
+     border-radius: 10px;
+     padding: 10px;
+     border-style: solid;
+  }
+</style>
