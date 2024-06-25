@@ -49,6 +49,11 @@ app.post('/submit', (req, res) => {
   });
 });
 
+// 檢查帳號
+
+// 檢查密碼
+
+
 // 當訪問首頁時，返回"Hello World!"訊息
 app.get('/', (req, res) => {
   res.send('Hello World!');

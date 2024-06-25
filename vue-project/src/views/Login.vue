@@ -1,6 +1,8 @@
 <!-- src/views/ApplyLogin.vue -->
 <script setup>
-  import {ref} from 'vue';
+  import axios from 'axios';
+import {ref} from 'vue';
+import { errorMessages } from 'vue/compiler-sfc';
 
   // 滑鼠事件
   let buttonA = ref("background-color: white");
@@ -37,13 +39,40 @@
   generateCaptcha();
 
   // 送出表單與驗證
-  const submitForm = () =>  {
+  const submitForm = async () =>  {
     if(usercaptcha.value !== captcha.value){
       captchaError.value = "驗證碼輸入錯誤，請重新輸入";
       generateCaptcha();
       return;
     }
     captchaError="";
+
+    // 確認帳號與密碼
+    const errorMessages=ref('');
+    const account=ref('');
+    const password=ref('');
+
+    try{
+      const checkResponse =await axios.post("http://localhost:3000/checkAccount", {
+        account: account.value,
+        password: password.value
+      });
+
+      if(Array.isArray(checkResponse.data)){
+        if(checkResponse.data?.[0]?.exists === false){
+          errorMessages.value="帳號不存在，請重新輸入";
+        }else{
+          if(password.value){
+            // 需要再修改
+            errorMessages.value="密碼輸入錯誤，請重新輸入";
+          }
+        }
+      }else{
+
+      }
+    }catch(error){
+
+    }
   }
 
 </script>
@@ -55,6 +84,8 @@
           <div class="contentA">帳號:<input v-model="account" required placeholder="請輸入您的帳號" pattern="[a-zA-Z0-9]{8,16}" /></div>
           <div class="contentA">密碼:<input v-model="password" type="password" required placeholder="請輸入您的密碼" pattern="[a-zA-Z0-9]{8,16}" /></div>
           <div class="outer"><span class="contentB">驗證碼:<input/></span><span @click="generateCaptcha">{{ captcha }}</span></div>
+          <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
+          <div v-if="captchaError" class="error">{{ captchaError }}</div>
           <button type="submit" class="bottonA" :style="buttonA" @mouseover="ChangeColorA" @mouseleave="ReturnColorA">登入會員</button>
       </form>
     </div>
@@ -73,7 +104,7 @@
      border-width: 5px;
      background-color: #dddddd;
      width: 500px;
-     height: 500px;
+     height: 410px;
      position: relative;
      left: 50%;
      transform: translateX(-50%);
@@ -124,7 +155,7 @@
     font-size: 24px;
     font-weight: bold;
     position: relative;
-    top:30px;
+    top:25px;
     left:165px;
     cursor: pointer; 
   }
@@ -139,5 +170,11 @@
      border-radius: 10px;
      padding: 10px;
      border-style: solid;
+  }
+  .error{
+    color: red;
+    text-align: center;
+    margin-top: 20px;
+    font-weight: bold;
   }
 </style>
