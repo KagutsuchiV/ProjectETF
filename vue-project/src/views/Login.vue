@@ -1,8 +1,9 @@
 <!-- src/views/ApplyLogin.vue -->
 <script setup>
-  import axios from 'axios';
+import axios from 'axios';
 import {ref} from 'vue';
-import { errorMessages } from 'vue/compiler-sfc';
+
+// import { errorMessages } from 'vue/compiler-sfc';
 
   // 滑鼠事件
   let buttonA = ref("background-color: white");
@@ -25,7 +26,7 @@ import { errorMessages } from 'vue/compiler-sfc';
   // 驗證碼
   const captcha = ref('');
   const usercaptcha = ref('');
-  const captchaError = ref('');
+  // const captchaError = ref('');
 
   const generateCaptcha = () => {
     const chars ='abcdefghijkmnpqrestuvwxyzABCDEFGHIJKLMNPQRSTUVWXYZ0123456789';
@@ -38,42 +39,42 @@ import { errorMessages } from 'vue/compiler-sfc';
   // 初始驗證碼
   generateCaptcha();
 
+  // 確認帳號與密碼
+  const account=ref('');
+  const password=ref('');
+  const errorMessage=ref('');
+
   // 送出表單與驗證
   const submitForm = async () =>  {
     if(usercaptcha.value !== captcha.value){
-      captchaError.value = "驗證碼輸入錯誤，請重新輸入";
+      errorMessage.value = "驗證碼輸入錯誤，請重新輸入";
       generateCaptcha();
       return;
     }
-    captchaError="";
+    errorMessage.value="";
 
-    // 確認帳號與密碼
-    const errorMessages=ref('');
-    const account=ref('');
-    const password=ref('');
+    try {
+    const checkResponse = await axios.post("http://localhost:3000/checkAP", {
+      account: account.value,
+      password: password.value
+    },{ withCredentials:true });
 
-    try{
-      const checkResponse =await axios.post("http://localhost:3000/checkAccount", {
-        account: account.value,
-        password: password.value
-      });
-
-      if(Array.isArray(checkResponse.data)){
-        if(checkResponse.data?.[0]?.exists === false){
-          errorMessages.value="帳號不存在，請重新輸入";
-        }else{
-          if(password.value){
-            // 需要再修改
-            errorMessages.value="密碼輸入錯誤，請重新輸入";
-          }
-        }
-      }else{
-
+    if (checkResponse.data.exists === false) {
+      errorMessage.value = "帳號不存在，請重新輸入";
+      generateCaptcha();
+    } else {
+      if (!checkResponse.data.passwordCorrect) {
+        errorMessage.value = "密碼輸入錯誤，請重新輸入";
+        generateCaptcha();
+      } else {
+        // 驗證成功，導引至其他網站
+        window.location.href = "http://localhost:5173/";
       }
-    }catch(error){
-
     }
+  } catch (error) {
+    console.error(error);
   }
+}
 
 </script>
 
@@ -83,9 +84,9 @@ import { errorMessages } from 'vue/compiler-sfc';
       <form @submit.prevent="submitForm">
           <div class="contentA">帳號:<input v-model="account" required placeholder="請輸入您的帳號" pattern="[a-zA-Z0-9]{8,16}" /></div>
           <div class="contentA">密碼:<input v-model="password" type="password" required placeholder="請輸入您的密碼" pattern="[a-zA-Z0-9]{8,16}" /></div>
-          <div class="outer"><span class="contentB">驗證碼:<input/></span><span @click="generateCaptcha">{{ captcha }}</span></div>
+          <div class="outer"><span class="contentB">驗證碼:<input v-model="usercaptcha" required /></span><span @click="generateCaptcha">{{ captcha }}</span></div>
           <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
-          <div v-if="captchaError" class="error">{{ captchaError }}</div>
+          <!-- <div v-if="captchaError" class="error">{{ captchaError }}</div> -->
           <button type="submit" class="bottonA" :style="buttonA" @mouseover="ChangeColorA" @mouseleave="ReturnColorA">登入會員</button>
       </form>
     </div>
