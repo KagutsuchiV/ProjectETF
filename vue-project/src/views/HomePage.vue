@@ -1,24 +1,65 @@
 <!-- src/views/HomePage.vue -->
  <script setup>
-    import FocusComp from "./Focus.vue";
+    import axios from "axios";
+import FocusComp from "./Focus.vue";
     import SearchComp from "./Search.vue";
-    import {ref} from "vue";
+    import {onMounted, ref} from "vue";
 
-    let Apply = ref("background-color: white");
-    let ChangeColor=function(){
-      Apply.value="background-color: #AAAAAA; font-weight: bold";
-    };
-    let ReturnColor=function(){
-      Apply.value="background-color: white";
+    // let Apply = ref("background-color: white");
+    // let ChangeColor=function(){
+    //   Apply.value="background-color: #AAAAAA; font-weight: bold";
+    // };
+    // let ReturnColor=function(){
+    //   Apply.value="background-color: white";
+    // };
+
+    let styles={
+      Apply: ref("background-color: white"),
+      Login: ref("background-color: white"),
+      Logout: ref("background-color: white"),
+      Center: ref("background-color: white"),
+      ERA: ref("background-color: white")
     };
 
-    let Login = ref("background-color: white");
-    let ChangeColorB=function(){
-      Login.value="background-color: #AAAAAA; font-weight: bold";
+    let ChangeColor=function(key){
+      styles[key].value="background-color: #AAAAAA; font-weight: bold";
     };
-    let ReturnColorB=function(){
-      Login.value="background-color: white";
+
+    let ReturnColor=function(key){
+      styles[key].value="background-color: white";
     };
+
+
+    // 用戶訊息
+    const user = ref(null);
+
+  
+
+    // 獲取會話狀態
+    const getSessionStatus =async() => {
+      try{
+        const response = await axios.get("http://localhost:3000/session-status", { withCredentials: true });
+        if (response.data.message === 'Session exist'){
+          user.value = response.data.user.username;
+        }
+      }catch(error){
+        console.error(error);
+      }
+    };
+
+    const logout = async () => {
+      try {
+        await axios.post("http://localhost:3000/logout", {}, { withCredentials: true });
+        user.value = null;
+        window.location.href = "http://localhost:5173/";
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    onMounted(() =>{
+      getSessionStatus();
+    });
 </script>
 <template>
     <div class="TOP">
@@ -27,8 +68,18 @@
 
     <div class="AL">
       <div class="member">會員專區</div>
-      <router-link to="/ApplyLogin" class="Apply" @mouseover="ChangeColor" @mouseleave="ReturnColor" :style="Apply">申請帳號</router-link><br/>
-      <router-link to="/Login" class="Login" @mouseover="ChangeColorB" @mouseleave="ReturnColorB" :style="Login">前往登入</router-link>
+        <router-link to="/ApplyLogin" v-if="!user" class="Apply" @mouseover="ChangeColor('Apply')" @mouseleave="ReturnColor('Apply')" :style="styles.Apply.value">申請帳號</router-link><br/>
+        <router-link to="/Login" v-if="!user" class="Login" @mouseover="ChangeColor('Login')" @mouseleave="ReturnColor('Login')" :style="styles.Login.value">前往登入</router-link>
+      
+        <!-- 顯示用戶名與登出按鈕 -->
+        <div v-if="user">
+          <div class="welcome">歡迎 {{ user }}</div>
+          <div>
+          <router-link to="/member" class="center" @mouseover="ChangeColor('Center')" @mouseleave="ReturnColor('Center')" :style="styles.Center.value">會員中心</router-link><br/>
+          <router-link to="/ERA" class="ERA" @mouseover="ChangeColor('ERA')" @mouseleave="ReturnColor('ERA')" :style="styles.ERA.value">ETF-ERA</router-link>
+          </div>
+          <button @click="logout" class="logout" @mouseover="ChangeColor('Logout')" @mouseleave="ReturnColor('Logout')" :style="styles.Logout.value">登出</button>
+        </div>
     </div>
 
     <SearchComp></SearchComp>
@@ -94,5 +145,54 @@
     top: 100px;
     left: 60px;
     padding: 20px;
+  }
+  .welcome{
+    font-size: 20px;
+    position: relative;
+    top: -10px;
+    margin-left: 10px;
+  }
+  .center
+  {
+    font-size: 28px;
+    color: inherit;
+    text-decoration: none;
+    border-radius: 10px;
+    border-style: solid;
+    border-width: 2px;
+    padding: 10px;
+    position: relative;
+    left: 80px;
+    top: 10px
+  }
+
+  .ERA{
+    font-size: 28px;
+    color: inherit;
+    text-decoration: none;
+    border-radius: 10px;
+    border-style: solid;
+    border-width: 2px;
+    padding: 10px;
+    position: relative;
+    left: 78px;
+    top: 40px;
+  }
+
+  .ERA:hover{
+    letter-spacing: -1px; /* 調整字母間距以彌補變粗的字體 */
+  }
+
+  .logout{
+    font-size: 28px;
+    color: inherit;
+    text-decoration: none;
+    border-radius: 10px;
+    border-style: solid;
+    border-width: 2px;
+    cursor: pointer;
+    position: relative;
+    left: 110px;
+    top: 60px;
   }
 </style>

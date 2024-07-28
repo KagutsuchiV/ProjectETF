@@ -33,7 +33,7 @@
     .focus{
         background-color: #dddddd;
         width:99%;
-        height: 240px;
+        height: auto;
         position: relative;
         top: -260px;
         border-style: double;
@@ -45,5 +45,6 @@
         font-size: 28px;
         font-weight: bold;
         border-bottom:solid;
+        word-break: break-word;
     }
 </style>

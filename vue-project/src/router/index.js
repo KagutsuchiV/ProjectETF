@@ -3,7 +3,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomePage from '../views/HomePage.vue'
 import ApplyLoginPage from '../views/ApplyLogin.vue'
 import LoginPage from '../views/Login.vue'
-
+import MemberPage from '../views/Member.vue'
+import ERAPAGE from '../views/ERA.vue'
 
 const routes = [
   {
@@ -20,6 +21,16 @@ const routes = [
     path: '/Login',
     name: 'Login',
     component: LoginPage,
+  },
+  {
+    path: '/member',
+    name: 'member',
+    component: MemberPage,
+  },
+  {
+    path: '/ERA',
+    name: 'ERA',
+    component: ERAPAGE,
   }
 ]
 

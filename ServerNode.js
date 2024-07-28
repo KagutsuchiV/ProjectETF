@@ -20,6 +20,7 @@ app.use(cors({
 }));
 app.use(cookieParser());
 app.use(session({
+  name: 'cookiename',
   secret: 'ETF_secret_202407', //自行設定
   resave: false,
   saveUninitialized: true,
@@ -77,7 +78,7 @@ app.post('/submit', async (req, res) => {
 // 檢查帳號與密碼
 app.post('/checkAP', (req, res) => {
   const {account, password} = req.body;
-  const query ='SELECT password FROM users WHERE account=?';
+  const query ='SELECT username, password FROM users WHERE account=?';
   pool.query(query, [account], (err, results) => {
     if (err){
       console.error(err);
@@ -96,7 +97,7 @@ app.post('/checkAP', (req, res) => {
         }
         if (passwordCorrect) {
           // 設置會話
-          req.session.user = { account };
+          req.session.user = { username: results[0].username };
           res.status(200).json({ exists: true, passwordCorrect });
         } else {
           res.status(200).json({ exists: true, passwordCorrect: false });
@@ -113,6 +114,18 @@ app.get('/session-status', (req,res) => {
   }else{
     res.status(200).json({message: 'No session found'});
   }
+});
+
+//退出會話
+app.post('/logout', (req,res) =>{
+  req.session.destroy(err =>{
+    if(err){
+      console.error(err);
+      res.status(500).json({message: 'Fail to log out'});
+    }else{
+      res.status(200).json({message: 'Logged out successfully'});
+    }
+  });
 });
 
 
