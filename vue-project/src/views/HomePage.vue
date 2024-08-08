@@ -1,7 +1,7 @@
 <!-- src/views/HomePage.vue -->
  <script setup>
     import axios from "axios";
-import FocusComp from "./Focus.vue";
+    import FocusComp from "./Focus.vue";
     import SearchComp from "./Search.vue";
     import {onMounted, ref} from "vue";
 
