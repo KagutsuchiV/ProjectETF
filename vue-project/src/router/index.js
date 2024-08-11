@@ -5,6 +5,7 @@ import ApplyLoginPage from '../views/ApplyLogin.vue'
 import LoginPage from '../views/Login.vue'
 import MemberPage from '../views/Member.vue'
 import ERAPAGE from '../views/ERA.vue'
+import recordPAGE from '../views/Record.vue'
 
 const routes = [
   {
@@ -31,6 +32,11 @@ const routes = [
     path: '/ERA',
     name: 'ERA',
     component: ERAPAGE,
+  },
+  {
+    path: '/record',
+    name: 'record',
+    component: recordPAGE
   }
 ]
 

@@ -2,6 +2,9 @@
 <script setup>
 import axios from 'axios';
 import {ref, watch} from 'vue';
+import { useRouter } from 'vue-router';
+
+import { eventBus } from './eventBus';
 
 // 建立年份選項
 const years =ref(Array.from({length: 2030 - 1980 + 1}, (v,i) => 1980 + i));
@@ -22,12 +25,74 @@ function updateDays(){
 // 監聽年月變化
 watch([selectYear, selectMonth], updateDays);
 
+// 切換買or賣
+const mode=ref("buy");
+let buttonA=ref("background-color: red");
+function modeBuy(){
+  mode.value="buy";
+  buttonA.value="background-color: red";
+}
+
+function modeSale(){
+  mode.value="sale";
+  buttonA.value="background-color: green";
+}
+
+// 送出表單
+const code=ref('');
+const number=ref('');
+const price=ref('');
+const fee=ref('');
+const errorMessage = ref('');
+
+const router =useRouter();
+const submitForm =async () =>{
+  try{
+    const date = `${selectYear.value}-${String(selectMonth.value).padStart(2, '0')}-${String(selectDay.value).padStart(2, '0')}`;
+    if(mode.value==="buy"){
+      const ERAresponse = await axios.post("http://localhost:3000/ERAbuy", {
+      date: date,
+      code: code.value,
+      number: number.value,
+      price: price.value,
+      fee: fee.value
+    })
+    }else{
+      const ERAresponse = await axios.post("http://localhost:3000/ERAsale", {
+      date: date,
+      code: code.value,
+      number: number.value,
+      price: price.value,
+      fee: fee.value
+    })
+    }
+
+      // 顯示完成送出的提示視窗
+      alert('表單已成功送出！');
+
+      // 重設表單內容
+      code.value = '';
+      number.value = '';
+      price.value = '';
+      fee.value = '';
+      errorMessage.value = ''; // 重設錯誤訊息
+
+      
+      eventBus.value.dispatchEvent(new Event('updateRecords'));
+      router.push('/ERA');
+
+  }catch (error){
+    errorMessage.value = '提交失敗，請稍後再試';
+    console.error(error);
+  }
+}
+
 </script>
 
 <template>
     <div>
-        <form>
-            <sus>買</sus><sus>賣</sus>
+        <form @submit.prevent="submitForm">
+            <sus @click="modeBuy">買</sus><sus @click="modeSale">賣</sus>
             <div>年
               <select v-model="selectYear">
                 <option v-for="year in years" :key="year" :value="year">{{ year }}</option>
@@ -40,20 +105,21 @@ watch([selectYear, selectMonth], updateDays);
             </div>
             <div>日
               <select v-model="selectDay">
-                <option v-for="day in days" :key="month" :value="day">{{ day }}</option>
+                <option v-for="day in days" :key="day" :value="day">{{ day }}</option>
               </select>
             </div>
-            <div>代號<input/></div>
-            <div>張數<input/></div>
-            <div>價格<input/></div>
-            <div>手續費<input/></div>
+            <div>代號<input v-model="code"/></div>
+            <div>張數<input v-model="number"/></div>
+            <div>價格<input v-model="price"/></div>
+            <div>手續費<input v-model="fee"/></div>
+            <button type="submit" :style="buttonA">送出</button>
         </form>
     </div>
 </template>
   
   <script>
   export default {
-    name: 'MemberPage'
+    name: 'ERAPage'
   }
 </script>
 
