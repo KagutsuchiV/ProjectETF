@@ -42,6 +42,7 @@ function modeSale(){
 const code=ref('');
 const number=ref('');
 const price=ref('');
+const revenue=ref('');
 const fee=ref('');
 const errorMessage = ref('');
 
@@ -63,6 +64,7 @@ const submitForm =async () =>{
       code: code.value,
       number: number.value,
       price: price.value,
+      revenue: revenue.value,
       fee: fee.value
     })
     }
@@ -75,6 +77,7 @@ const submitForm =async () =>{
       number.value = '';
       price.value = '';
       fee.value = '';
+      revenue.value='';
       errorMessage.value = ''; // 重設錯誤訊息
 
       
@@ -112,6 +115,7 @@ const submitForm =async () =>{
             <div>代號<input v-model="code" required pattern="[a-zA-Z0-9]{3,10}" placeholder="請輸入ETF代碼"/></div>
             <div>張數<input v-model="number" required pattern="\d{1,5}"/></div>
             <div>價格<input v-model="price" required pattern="\d{1,12}" placeholder="總交易金額，不含手續費"/></div>
+            <div v-if="mode=='sale'">收益<input v-model="revenue" required pattern="\d{1,12}" placeholder="收益金額，不含手續費"/></div>
             <div>手續費<input v-model="fee" required pattern="\d{1,10}"/></div>
             <button type="submit" :style="buttonA">送出</button>
         </form>

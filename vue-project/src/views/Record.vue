@@ -74,6 +74,7 @@ onUnmounted(() => {
                 <th>代號</th>
                 <th>張數</th>
                 <th>價格</th>
+                <th>收益</th>
                 <th>手續費</th>
             </tr>
         </thead>
@@ -83,6 +84,7 @@ onUnmounted(() => {
                 <td>{{ recordsale.code }}</td>
                 <td>{{ recordsale.number }}</td>
                 <td>{{ recordsale.price }}</td>
+                <td>{{ recordsale.revenue }}</td>
                 <td>{{ recordsale.fee }}</td>
             </tr>
         </tbody>
