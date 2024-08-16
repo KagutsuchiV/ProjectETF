@@ -4,6 +4,17 @@ import axios from 'axios';
 import {ref, onMounted,onUnmounted, watch} from 'vue';
 import { useRouter } from 'vue-router';
 
+  // 滑鼠事件
+let buttonA = ref("background-color: white");
+let back = ref("background-color: white");
+let ChangeColor=function(){
+  back.value="background-color: #AAAAAA; font-weight: bold";
+};
+let ReturnColor=function(){
+   back.value="background-color: white";
+};
+
+
 const records=ref([]);
 
 //建立年份選項
@@ -110,6 +121,8 @@ onMounted(()=>{
             </tr>
         </tbody>
     </table>
+
+    <router-link to="/" class="back" :style="back" @mouseover="ChangeColor" @mouseleave="ReturnColor">回首頁</router-link>
 </template>
   
   <script>
@@ -119,5 +132,14 @@ onMounted(()=>{
 </script>
 
 <style scoped>
-
+  .back{
+    position: relative;
+    left: 500px;
+    color: inherit;
+    text-decoration: none;
+    font-size: 24px;
+    border-radius: 10px;
+    padding: 10px;
+    border-style: solid;
+  }
 </style>

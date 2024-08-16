@@ -7,6 +7,7 @@ import MemberPage from '../views/Member.vue'
 import ERAPAGE from '../views/ERA.vue'
 import recordPAGE from '../views/Record.vue'
 import DividendPage from '../views/Dividend.vue'
+import AnalysisPage from '../views/Analysis.vue'
 
 const routes = [
   {
@@ -40,9 +41,14 @@ const routes = [
     component: recordPAGE,
   },
   {
-    path:'/Dividend',
+    path: '/Dividend',
     name: 'Dividend',
     compent: DividendPage,
+  },
+  {
+    path: '/Analysis',
+    name:  'Analysis',
+    compent: AnalysisPage,
   }
 ]
 
