@@ -4,7 +4,10 @@ import {ref, onMounted, onUnmounted} from 'vue';
 
 import { eventBusAnalysis } from './eventBus';
 
-const records =ref([]);
+const records = ref([]);
+const price = ref('');
+
+const recordRevenues = ref([]);
 
 // 從後端獲取資料
 const fetchRecords= async()=>{
@@ -15,6 +18,32 @@ const fetchRecords= async()=>{
         records.value= response.data.results;
     }catch(error){
         console.error('fail to fetch getPercentage', error);
+    }
+}
+
+// 提交表單-計算收益
+const submitForm = async()=>{
+    const CurrentDate=new Date(); //獲得當前的日期與時間
+    const FormattedDate=CurrentDate.toISOString().split('T')[0]; //格式化YYYY-MM-DD
+    console.log(FormattedDate);
+    try{
+        const response= await axios.post("http://localhost:3000/SecondServer/revenue",{
+            date: FormattedDate,
+            price: price.value
+        });
+        console.log('successfully submit', response.data);
+    }catch(error){
+        console.error('Failed to submit form', error);
+    }
+}
+
+// 從後端獲取資料-總收益
+const fetchRecordsRevenue = async()=>{
+    try{
+        const response = await axios.get("http://localhost:3000/SecondServer/getRevenue");
+        recordRevenues.value=response.data.results
+    }catch(error){
+        console.error(error);
     }
 }
 
@@ -42,6 +71,29 @@ onUnmounted(()=>{
         <tr v-for="record in records" :key="record.code">
             <td>{{ record.code }}</td>
             <td>{{ record.price_percentage }}</td>
+        </tr>
+    </tbody>
+</table>
+
+<div>計算你目前的收益</div>
+<form @submit.prevent="submitForm">
+    <div>目前總價差 <input  v-model="price" required pattern="\d{1,12}" placeholder="" /></div>
+    <button type="submit">計算收益</button>
+</form>
+<div>總收益紀錄</div>
+<table>
+    <thead>
+        <tr>
+            <th>日期</th>
+            <th>總收益</th>
+            <th>總收益百分比</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr v-for="recordRevenue in recordRevenues" :key="recordRevenue.">
+            <td>{{ recordRevenue.date }}</td>
+            <td>{{ recordRevenue.revenue }}</td>
+            <td>{{ recordRevenue.price_percentage }}</td>
         </tr>
     </tbody>
 </table>
