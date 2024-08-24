@@ -41,7 +41,10 @@ const submitForm = async()=>{
 const fetchRecordsRevenue = async()=>{
     try{
         const response = await axios.get("http://localhost:3000/SecondServer/getRevenue");
-        recordRevenues.value=response.data.results
+        recordRevenues.value=response.data.data;
+        console.log('getrevenue');
+        console.log(response.data.data);
+        console.log(response.data.data.results);
     }catch(error){
         console.error(error);
     }
@@ -49,6 +52,7 @@ const fetchRecordsRevenue = async()=>{
 
 onMounted(()=>{
     fetchRecords();
+    fetchRecordsRevenue();
     eventBusAnalysis.value.addEventListener('updateAnalysis', fetchRecords);
 });
 
@@ -90,10 +94,10 @@ onUnmounted(()=>{
         </tr>
     </thead>
     <tbody>
-        <tr v-for="recordRevenue in recordRevenues" :key="recordRevenue.">
-            <td>{{ recordRevenue.date }}</td>
-            <td>{{ recordRevenue.revenue }}</td>
-            <td>{{ recordRevenue.price_percentage }}</td>
+        <tr v-for="recordRevenue in recordRevenues" :key="recordRevenue.code">
+            <td>{{ recordRevenue.Selected_date}}</td>
+            <td>{{ recordRevenue.total_sum }}</td>
+            <td>{{ recordRevenue.ratio }}</td>
         </tr>
     </tbody>
 </table>

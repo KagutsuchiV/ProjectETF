@@ -19,9 +19,8 @@ const queryDatabase = (req, res, query, account)=>{
     });
 };
 
-// 
 // 提取資料庫查詢的函數-2
-const queryDatabaseInsert = (req, res, query, params) => {
+const queryDatabaseB = (req, res, query, params) => {
     const pool = req.app.get('pool');
 
     pool.query(query, params, (err, results) => {
@@ -31,6 +30,7 @@ const queryDatabaseInsert = (req, res, query, params) => {
             return;
         }
         res.status(200).json({ message: 'Operation successful', data: results });
+        console.log(results);
     });
 };
 
@@ -92,9 +92,54 @@ router.post("/revenue",(req,res)=>{
     const {date, price}=req.body;
     const account=req.session.user.account;
 
+    // 將接收到的日期轉換為本地時間
+    const adjustedDate = new Date(date);
+    adjustedDate.setMinutes(adjustedDate.getMinutes() - adjustedDate.getTimezoneOffset());
+    const formattedDate = adjustedDate.toISOString().split('T')[0];    
+
     const query='insert into Revenue (date, account, price) values (?, ?, ?)';
    
-    queryDatabaseInsert(req,res,query,[date,account,price]);
+    queryDatabaseB(req,res,query,[formattedDate,account,price]);
+});
+
+// 記錄總收益
+router.get('/getRevenue',(req,res)=>{
+    const account=req.session.user.account;
+
+const today = new Date();
+
+// 轉換為台灣時間 (UTC+8)
+const options = { timeZone: 'Asia/Taipei' };
+const localTime = new Date(today.toLocaleString('en-US', options));
+
+// 格式化日期為 YYYY-MM-DD
+const yyyy = localTime.getFullYear();
+const mm = String(localTime.getMonth() + 1).padStart(2, '0'); // 月份是從 0 開始計算的，所以要加 1
+const dd = String(localTime.getDate()).padStart(2, '0');
+const formattedDate = `${yyyy}-${mm}-${dd}`;
+
+console.log("time: " + formattedDate);
+
+
+    const query=
+    `SELECT
+     CONVERT_TZ(
+        (SELECT date FROM revenue WHERE account = ? AND date = ? ORDER BY date DESC LIMIT 1),
+        '+00:00',  -- 假設日期儲存在 UTC 時區
+        '+08:00'   -- 轉換到台灣時間 (UTC+8)
+    ) AS Selected_date,
+        total_sum,
+        total_sum / COALESCE(allcost, 1) AS ratio
+    FROM (
+        SELECT 
+        COALESCE((SELECT SUM(price) FROM dividend WHERE account = ?), 0) +
+        COALESCE((SELECT SUM(revenue) FROM ERAsale WHERE account = ?), 0) +
+        COALESCE((SELECT price FROM revenue WHERE account = ? AND date = ? ORDER BY date DESC LIMIT 1), 0) AS total_sum,
+        (SELECT SUM(price) FROM ERA WHERE account = ?) AS allcost
+    ) AS subquery;`;
+
+    const values=[account, formattedDate, account, account, account, formattedDate, account];
+    queryDatabaseB(req,res,query,values);
 });
 
 module.exports=router;
