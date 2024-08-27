@@ -134,7 +134,7 @@ console.log("time: " + formattedDate);
         SELECT 
         COALESCE((SELECT SUM(price) FROM dividend WHERE account = ?), 0) +
         COALESCE((SELECT SUM(revenue) FROM ERAsale WHERE account = ?), 0) +
-        COALESCE((SELECT price FROM revenue WHERE account = ? AND date = ? ORDER BY date DESC LIMIT 1), 0) AS total_sum,
+        COALESCE((SELECT price FROM revenue WHERE account = ? AND date = ? ORDER BY id DESC LIMIT 1), 0) AS total_sum,
         (SELECT SUM(price) FROM ERA WHERE account = ?) AS allcost
     ) AS subquery;`;
 

@@ -31,6 +31,7 @@ const submitForm = async()=>{
             date: FormattedDate,
             price: price.value
         });
+        alert('表單已成功送出！');
         console.log('successfully submit', response.data);
     }catch(error){
         console.error('Failed to submit form', error);
