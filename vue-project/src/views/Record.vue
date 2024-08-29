@@ -66,7 +66,7 @@ onUnmounted(() => {
         </tbody>
     </table>
 
-    <div>ETFsale record</div>
+    <div class="salfRecord">ETFsale record</div>
     <table>
         <thead>
             <tr>

@@ -8,6 +8,7 @@ import ERAPAGE from '../views/ERA.vue'
 import recordPAGE from '../views/Record.vue'
 import DividendPage from '../views/Dividend.vue'
 import AnalysisPage from '../views/Analysis.vue'
+import uploadPage from '../views/upload.vue'
 
 const routes = [
   {
@@ -49,6 +50,11 @@ const routes = [
     path: '/Analysis',
     name:  'Analysis',
     compent: AnalysisPage,
+  },
+  {
+    path: '/upload',
+    name: 'upload',
+    compent: uploadPage,
   }
 ]
 

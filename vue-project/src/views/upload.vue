@@ -2,20 +2,11 @@
 <script setup>
 import axios from 'axios';
 import {ref} from 'vue';
-import uploadComp from './upload.vue';
 
 </script>
 
 <template>
-    <div>member</div>
-    <div>Change your password</div>
-    <form>
-      <div><input/></div>
-      <div><input/></div>
-      <button></button>
-    </form>
-
-    <uploadComp></uploadComp>
+    <div>upload</div>
 </template>
   
   <script>
