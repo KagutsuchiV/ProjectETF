@@ -31,7 +31,6 @@ app.use(session({
 const SecondServer =require('./SecondServer');
 app.use('/SecondServer', SecondServer);
 
-
 const port = 3000; // 你可以選擇任何你想要的端口號
 
 // 使用 express 中間軟體來解析 JSON 請求體
@@ -59,6 +58,10 @@ const pool = mysql.createPool({
 });
 
 app.set('pool', pool);
+
+// 第三伺服器 需在MySQL連接池之後
+const ThirdServer =require('./ThirdServer')(pool);
+app.use('/ThirdServer', ThirdServer)
 
 // 檢查帳號是否存在
 app.post('/checkAccount',(req, res)=>{
