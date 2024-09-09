@@ -4,9 +4,40 @@ import axios from 'axios';
 import {ref} from 'vue';
 import uploadComp from './upload.vue';
 import { useRouter } from 'vue-router';
-import { errorMessages } from 'vue/compiler-sfc';
+import { onMounted } from 'vue';
 
 const router =useRouter();
+
+// 會員名
+const nickname=ref("");
+
+// 大頭貼Url
+const avatarUrl =ref("");
+
+// 取得 cookie 並解析暱稱
+const getCookie = (nickname) => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${nickname}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+  return '';
+};
+
+// 當元件載入時，從 cookie 中取得暱稱與大頭貼
+onMounted(async () => {
+  nickname.value = getCookie('nickname') || '訪客';  // 如果找不到暱稱，顯示「訪客」
+
+  try{
+    const response = await axios.get("http://localhost:3000/ThirdServer/getAvatar");
+    if(response.status===200){
+      avatarUrl.value=response.data.avatarUrl; //獲得大頭貼Url
+      console.log("get photo");
+    }
+  }catch(error){
+    console.error("無法獲得大頭貼", error);
+    avatarUrl.value = "/uploads/user.png" //預設大頭貼
+  }
+});
+
 
 // 變更密碼
 const password=ref("");
@@ -54,8 +85,9 @@ try{
 
 <template>
     <div>member</div>
-    <div>會員名</div>
+    <div>會員名: {{ nickname }}</div>
     <div>頭像區</div>
+    <img :src="`/uploads/${avatarUrl}`" alt="User Avatar" style="width: 100px; height: 100px;" />
     <div>Change your password</div>
     <form @submit.prevent="submitForm">
       <div>輸入原密碼: <input v-model="password" type="password" required placeholder="英文or數字，8至16個字元" pattern="[a-zA-Z0-9]{8,16}" /></div>

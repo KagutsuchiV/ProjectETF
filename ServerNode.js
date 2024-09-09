@@ -3,12 +3,19 @@ const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
 
+const path = require('path'); // 引入 path 模組
+
 //設置會話
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
 
 const app = express();
+
+// 設定靜態檔案路徑
+const avatarDir = path.join(__dirname, 'uploads');
+app.use('/uploads', express.static(avatarDir));
+
 
 // 設定session中間件
 const MySQLStore = require('express-mysql-session')(session);
@@ -128,6 +135,14 @@ app.post('/checkAP', (req, res) => {
             username: results[0].username,
             account: account 
           };
+
+          // 設置 cookie
+          res.cookie('nickname', results[0].username, {
+            httpOnly: false, // 若希望前端能讀取 cookie，設為 false
+            secure: false,   // 在 HTTPS 生產環境應設置為 true
+            maxAge: 1000 * 60 * 60 * 24  // 設置 cookie 有效時間 (一天)
+          });
+          
           res.status(200).json({ exists: true, passwordCorrect });
         } else {
           res.status(200).json({ exists: true, passwordCorrect: false });
