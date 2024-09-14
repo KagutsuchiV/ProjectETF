@@ -3,8 +3,13 @@ import axios from 'axios';
 import {ref, onMounted, onUnmounted} from 'vue';
 
 import { eventBusAnalysis } from './eventBus';
+import {Chart, registerables} from 'chart.js';
+
+// 手動註冊所有必要的控制器、元素、插件等
+Chart.register(...registerables);
 
 const records = ref([]);
+const chartRef = ref(null); // 圓餅圖的canvas參考
 const price = ref('');
 
 const recordRevenues = ref([]);
@@ -16,6 +21,9 @@ const fetchRecords= async()=>{
         console.log(response.data); // 添加此行來檢查返回的數據
         console.log(response.data.results);
         records.value= response.data.results;
+
+        // 在獲取數據後生成圓餅圖
+        createPieChart();
     }catch(error){
         console.error('fail to fetch getPercentage', error);
     }
@@ -51,8 +59,43 @@ const fetchRecordsRevenue = async()=>{
     }
 }
 
+// 創建圓餅圖
+const createPieChart = ()=>{
+    if (!chartRef.value){
+        console.error('canvas element not found!');
+        return;
+    }
+
+    const ctx = chartRef.value.getContext('2d');
+
+    const data = {
+        labels: records.value.map(record => record.code), // ETF code
+        datasets : [{
+            data: records.value.map(record => record.price_percentage), // 百分比data
+            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
+
+        }]
+    };
+
+    new Chart(ctx, {
+        type: 'pie', // 圓餅圖類型
+        data: data,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,  // 關閉寬高比保持
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+            },
+        },
+    });
+};
+
 onMounted(()=>{
-    fetchRecords();
+    fetchRecords().then(()=>{
+        createPieChart(); // 在數據加載完成後生成圓餅圖
+    });
     fetchRecordsRevenue();
     eventBusAnalysis.value.addEventListener('updateAnalysis', fetchRecords);
 });
@@ -79,6 +122,11 @@ onUnmounted(()=>{
         </tr>
     </tbody>
 </table>
+
+<!-- 添加canvas元素來顯示圓餅圖 -->
+ <div>
+    <canvas ref="chartRef" width="300" height="300"></canvas>
+ </div>
 
 <div>計算你目前的收益</div>
 <form @submit.prevent="submitForm">
