@@ -36,12 +36,18 @@ const uploadAvatar =async()=>{
 </script>
 
 <template>
-    <div>upload</div>
-    <form @submit.prevent="uploadAvatar">
-      <div><input type="file" @change="onFileChange" accept="image/png, image/jpeg,  image/jpg" /></div>
-      <div v-if="errorMessage">{{ errorMessage }}</div>
-      <button type="submit">上傳大頭貼</button>
+  <div class="upload">
+    <div class="uploadphoto">上傳大頭貼</div>
+    <div class="forCenter">
+      <form @submit.prevent="uploadAvatar">
+      <div><input type="file" @change="onFileChange" accept="image/png, image/jpeg,  image/jpg"  class="file"/></div>
+      <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
+      <button type="submit" class="uploadfile">上傳</button>
     </form>
+    </div>
+
+  </div>
+
 </template>
   
   <script>
@@ -51,5 +57,56 @@ const uploadAvatar =async()=>{
 </script>
 
 <style scoped>
+  .upload{
+    background-color: #dddddd;
+    border-style: double;
+    border-width: 5px;
 
+    position: relative;
+    top: -625px;
+    left: 72%;
+    height: 300px;
+    width: 27.5%;    
+  }
+
+  .uploadphoto{
+    text-align: center;
+    line-height: 40px;
+    font-size: 24px;
+    font-weight: bold;
+    background-color: #444444;
+    color: white;
+    height: 40px;
+  }
+
+  .forCenter{
+    display: flex;
+    flex-direction: column;
+    align-items: center;  /* 垂直置中 */
+  }
+
+  .file{
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 15%;
+    position: relative;
+    left: 15%;
+  }
+
+  .uploadfile{
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 20%;
+    position: relative;
+    left: 30%;
+    top:-30px;
+    border-radius: 10px;
+    cursor: pointer; 
+    width: 150px;
+  }
+
+  .error{
+    position: relative;
+    left: 80px;
+  }
 </style>
