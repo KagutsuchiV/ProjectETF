@@ -106,51 +106,122 @@ onUnmounted(()=>{
 </script>
 
 <template>
-<div>Analysis</div>
-<div>計算你的存股百分比</div>
-<table>
-    <thead>
-        <tr>
-            <th>ETF</th>
-            <th>百分比</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr v-for="record in records" :key="record.code">
-            <td>{{ record.code }}</td>
-            <td>{{ record.price_percentage }}</td>
-        </tr>
-    </tbody>
-</table>
+    <div class="areaAnalysis">
+        <div class="titleAnalysis">計算你的存股百分比</div>
+        <div class="forCenterAnalysis">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ETF</th>
+                        <th>百分比</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="record in records" :key="record.code">
+                        <td>{{ record.code }}</td>
+                        <td>{{ record.price_percentage }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 
 <!-- 添加canvas元素來顯示圓餅圖 -->
  <div>
-    <canvas ref="chartRef" width="300" height="300"></canvas>
+    <canvas ref="chartRef" width="300" height="300" class="photo"></canvas>
  </div>
 
-<div>計算你目前的收益</div>
-<form @submit.prevent="submitForm">
-    <div>目前總價差 <input  v-model="price" required pattern="\d{1,12}" placeholder="" /></div>
-    <button type="submit">計算收益</button>
-</form>
-<div>總收益紀錄</div>
-<table>
-    <thead>
-        <tr>
-            <th>日期</th>
-            <th>總收益</th>
-            <th>總收益百分比</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr v-for="recordRevenue in recordRevenues" :key="recordRevenue.code">
-            <td>{{ recordRevenue.Selected_date}}</td>
-            <td>{{ recordRevenue.total_sum }}</td>
-            <td>{{ recordRevenue.ratio }}</td>
-        </tr>
-    </tbody>
-</table>
+
+<div class="areaR">
+    <div class="titleR">計算你目前的收益</div>
+    <div class="forCenterR">
+        <form @submit.prevent="submitForm">
+            <div>目前總價差 <input  v-model="price" required pattern="\d{1,12}" placeholder="" /></div>
+            <button type="submit">計算收益</button>
+        </form>
+        <div>總收益紀錄</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>日期</th>
+                    <th>總收益</th>
+                    <th>總收益百分比</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="recordRevenue in recordRevenues" :key="recordRevenue.code">
+                    <td>{{ recordRevenue.Selected_date}}</td>
+                    <td>{{ recordRevenue.total_sum }}</td>
+                    <td>{{ recordRevenue.ratio }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
 </template>
 
 <style scoped>
+    .areaAnalysis{
+        background-color: #dddddd;
+        width: 20%;
+        height: 300px;
+        position: relative;
+        top: -1262px;
+        left: 42%;
+        border-style: double;
+        border-width: 5px;
+    }
+
+    .titleAnalysis{
+        text-align: center;
+        line-height: 40px;
+        font-size: 24px;
+        font-weight: bold;
+        background-color: #444444;
+        color: white;
+        height: 40px;
+    }
+
+    .forCenterAnalysis{
+        display: flex;
+        flex-direction: column;
+        align-items: center;  /* 垂直置中 */
+    }
+
+    .areaR{
+        background-color: #dddddd;
+        width: 20%;
+        height: 300px;
+        position: relative;
+        top: -1871px;
+        left: 63%;
+        border-style: double;
+        border-width: 5px;
+    }
+
+    .titleR{
+        text-align: center;
+        line-height: 40px;
+        font-size: 24px;
+        font-weight: bold;
+        background-color: #444444;
+        color: white;
+        height: 40px;
+    }
+
+    .forCenterR{
+        display: flex;
+        flex-direction: column;
+        align-items: center;  /* 垂直置中 */
+    }
+
+    .photo{
+        position: relative;
+        top: -1900px;
+        left: 450px;
+
+    }
 </style>

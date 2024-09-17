@@ -100,6 +100,13 @@ import {ref} from 'vue';
 </script>
 
 <style scoped>
+  html, body{
+  margin: 0;
+  padding: 0;
+  height: calc(100% - 100000px);  /* 確保頁面高度與視窗一致 */
+  overflow: hidden;  
+  }
+
   .package{
      border-style: double;
      border-width: 5px;

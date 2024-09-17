@@ -13,6 +13,12 @@
     //   Apply.value="background-color: white";
     // };
 
+    // 設定滾軸
+    document.addEventListener("DOMContentLoaded", function() {
+      document.body.style.height = `${window.innerHeight}px`;
+      document.body.style.overflow = "hidden"; // 隱藏滾動條
+    });
+
     let styles={
       Apply: ref("background-color: white"),
       Login: ref("background-color: white"),
@@ -94,6 +100,7 @@
 </script>
   
 <style scoped>
+
   .TOP{
       background-color: #dddddd; 
       border-style: double;

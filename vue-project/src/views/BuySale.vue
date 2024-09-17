@@ -95,31 +95,35 @@ const submitForm =async () =>{
 </script>
 
 <template>
-    <div>
+    <div class="areaA">
+      <div class="titleA">Buy & Sale</div>
+      <div class="forCenterA">
         <form @submit.prevent="submitForm">
             <sus @click="modeBuy">買</sus><sus @click="modeSale">賣</sus>
-            <div>年
+            <div>年 
               <select v-model="selectYear" required>
                 <option v-for="year in years" :key="year" :value="year">{{ year }}</option>
               </select>
             </div>
-            <div>月
+            <div>月 
               <select v-model="selectMonth" required>
                 <option v-for="month in months" :key="month" :value="month">{{ month }}</option>
               </select>
             </div>
-            <div>日
+            <div>日 
               <select v-model="selectDay" required>
                 <option v-for="day in days" :key="day" :value="day">{{ day }}</option>
               </select>
             </div>
-            <div>代號<input v-model="code" required pattern="[a-zA-Z0-9]{3,10}" placeholder="請輸入ETF代碼"/></div>
-            <div>張數<input v-model="number" required pattern="\d{1,5}"/></div>
-            <div>價格<input v-model="price" required pattern="\d{1,12}" placeholder="總交易金額，不含手續費"/></div>
+            <div>代號 <input v-model="code" required pattern="[a-zA-Z0-9]{3,10}" placeholder="請輸入ETF代碼"/></div>
+            <div>張數 <input v-model="number" required pattern="\d{1,5}"/></div>
+            <div>價格 <input v-model="price" required pattern="\d{1,12}" placeholder="總交易金額，不含手續費"/></div>
             <div v-if="mode=='sale'">收益<input v-model="revenue" required pattern="\d{1,12}" placeholder="收益金額，不含手續費"/></div>
-            <div>手續費<input v-model="fee" required pattern="\d{1,10}"/></div>
+            <div>手續費 <input v-model="fee" required pattern="\d{1,10}"/></div>
             <button type="submit" :style="buttonA">送出</button>
         </form>
+      </div>
+
     </div>
 </template>
   
@@ -128,7 +132,31 @@ const submitForm =async () =>{
     name: 'ERAPage'
   }
 </script>
-
+  
 <style scoped>
+  .areaA{
+    background-color: #dddddd;
+    width: 20%;
+    height: 300px;
+    position: relative;
+    top: -5px;
+    border-style: double;
+    border-width: 5px;
+  }
 
+  .titleA{
+    text-align: center;
+    line-height: 40px;
+    font-size: 24px;
+    font-weight: bold;
+    background-color: #444444;
+    color: white;
+    height: 40px;
+  }
+
+  .forCenterA{
+    display: flex;
+    flex-direction: column;
+    align-items: center;  /* 垂直置中 */
+  }
 </style>

@@ -9,7 +9,7 @@ import AnalysisComp from './Analysis.vue';
 </script>
 
 <template>
-    <div>ERA</div>
+    <h1 class="TOP">ERA</h1>
     <BuySaleComp></BuySaleComp>
     <RecordComp></RecordComp>
     <DividendComp></DividendComp>
@@ -19,7 +19,18 @@ import AnalysisComp from './Analysis.vue';
   <script>
 
 </script>
-
+  
 <style scoped>
-
+  .TOP{
+    background-color: #dddddd; 
+      border-style: double;
+      border-width: 5px;
+      font-size: 32px;
+      display: flex;
+      align-items: center;
+      margin-top: 0px;
+      align-items: center;  /* 垂直置中 */
+      justify-content: center;  /* 水平置中 */
+      padding: 5px;
+  }
 </style>

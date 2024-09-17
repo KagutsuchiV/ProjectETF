@@ -44,51 +44,62 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <div>ETF record</div>
-    <table>
-        <thead>
-            <tr>
-                <th>日期</th>
-                <th>代號</th>
-                <th>張數</th>
-                <th>價格</th>
-                <th>手續費</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="record in records">
-                <td>{{ record.date.split('T')[0] }}</td>
-                <td>{{ record.code }}</td>
-                <td>{{ record.number }}</td>
-                <td>{{ record.price }}</td>
-                <td>{{ record.fee }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="areaBuy">
+        <div class="titleBuy">ETF Buy Record</div>
+        <div class="forCenterBuy">
+            <table>
+            <thead>
+                <tr>
+                    <th>日期</th>
+                    <th>代號</th>
+                    <th>張數</th>
+                    <th>價格</th>
+                    <th>手續費</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="record in records">
+                    <td>{{ record.date.split('T')[0] }}</td>
+                    <td>{{ record.code }}</td>
+                    <td>{{ record.number }}</td>
+                    <td>{{ record.price }}</td>
+                    <td>{{ record.fee }}</td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
 
-    <div class="salfRecord">ETFsale record</div>
-    <table>
-        <thead>
-            <tr>
-                <th>日期</th>
-                <th>代號</th>
-                <th>張數</th>
-                <th>價格</th>
-                <th>收益</th>
-                <th>手續費</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="recordsale in recordsales">
-                <td>{{ recordsale.date.split('T')[0] }}</td>
-                <td>{{ recordsale.code }}</td>
-                <td>{{ recordsale.number }}</td>
-                <td>{{ recordsale.price }}</td>
-                <td>{{ recordsale.revenue }}</td>
-                <td>{{ recordsale.fee }}</td>
-            </tr>
-        </tbody>
-    </table>
+    </div>
+
+    <div class="areaSale">
+        <div class="titleSale">ETF Sale Record</div>
+        <div class="forCenterSale">
+            <table>
+                <thead>
+                    <tr>
+                        <th>日期</th>
+                        <th>代號</th>
+                        <th>張數</th>
+                        <th>價格</th>
+                        <th>收益</th>
+                        <th>手續費</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="recordsale in recordsales">
+                        <td>{{ recordsale.date.split('T')[0] }}</td>
+                        <td>{{ recordsale.code }}</td>
+                        <td>{{ recordsale.number }}</td>
+                        <td>{{ recordsale.price }}</td>
+                        <td>{{ recordsale.revenue }}</td>
+                        <td>{{ recordsale.fee }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
 </template>
   
   <script>
@@ -98,5 +109,57 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+    .areaBuy{
+        background-color: #dddddd;
+        width: 20%;
+        height: 300px;
+        position: relative;
+        top: -313.5px;
+        left: 21%;
+        border-style: double;
+        border-width: 5px;
+    }
 
+    .titleBuy{
+        text-align: center;
+        line-height: 40px;
+        font-size: 24px;
+        font-weight: bold;
+        background-color: #444444;
+        color: white;
+        height: 40px;
+    }
+
+    .forCenterBuy{
+        display: flex;
+        flex-direction: column;
+        align-items: center;  /* 垂直置中 */        
+    }
+
+    .areaSale{
+        background-color: #dddddd;
+        width: 20%;
+        height: 300px;
+        position: relative;
+        top: -623.5px;
+        left: 42%;
+        border-style: double;
+        border-width: 5px;
+    }
+
+    .titleSale{
+        text-align: center;
+        line-height: 40px;
+        font-size: 24px;
+        font-weight: bold;
+        background-color: #444444;
+        color: white;
+        height: 40px;
+    }
+
+    .forCenterSale{
+        display: flex;
+        flex-direction: column;
+        align-items: center;  /* 垂直置中 */
+    }
 </style>

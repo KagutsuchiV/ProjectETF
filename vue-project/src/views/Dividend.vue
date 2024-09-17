@@ -82,8 +82,10 @@ onMounted(()=>{
 </script>
 
 <template>
-    <div>Dividend form</div>
-    <form @submit.prevent="submitForm">
+    <div class="areaDividend">
+        <div class="titleDividend">Dividend</div>
+        <div class="forCenterDividend">
+            <form @submit.prevent="submitForm">
         <div>年
             <select v-model="selectyear" >
                 <option v-for="year in years" :key="year" :value="year">{{ year }}</option>
@@ -103,24 +105,32 @@ onMounted(()=>{
         <div>股利總額<input  v-model="price" required pattern="\d{1,12}" placeholder="總股利金額，含手續費" /></div>
         <button type="submit">送出</button>
     </form>
+        </div>
+    </div>
 
-    <div>Dividend record</div>
-    <table>
-        <thead>
-            <tr>
-                <th>日期</th>
-                <th>代號</th>
-                <th>股利</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="record in records">
-                <td>{{ record.date.split('T')[0] }}</td>
-                <td>{{ record.code }}</td>
-                <td>{{ record.price }}</td>
-            </tr>
-        </tbody>
-    </table>
+
+    <div class="areaDRecord">
+        <div class="titleDRecord">Dividend Record</div>
+        <div class="forCenterDRecord">
+            <table>
+                <thead>
+                    <tr>
+                        <th>日期</th>
+                        <th>代號</th>
+                        <th>股利</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="record in records">
+                        <td>{{ record.date.split('T')[0] }}</td>
+                        <td>{{ record.code }}</td>
+                        <td>{{ record.price }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 
     <router-link to="/" class="back" :style="back" @mouseover="ChangeColor" @mouseleave="ReturnColor">回首頁</router-link>
 </template>
@@ -132,14 +142,68 @@ onMounted(()=>{
 </script>
 
 <style scoped>
-  .back{
-    position: relative;
-    left: 500px;
-    color: inherit;
-    text-decoration: none;
-    font-size: 24px;
-    border-radius: 10px;
-    padding: 10px;
-    border-style: solid;
-  }
+    .areaDividend{
+        background-color: #dddddd;
+        width: 20%;
+        height: 300px;
+        position: relative;
+        top: -612px;
+        border-style: double;
+        border-width: 5px;
+    }
+
+    .titleDividend{
+        text-align: center;
+        line-height: 40px;
+        font-size: 24px;
+        font-weight: bold;
+        background-color: #444444;
+        color: white;
+        height: 40px;
+    }
+
+    .forCenterDividend{
+        display: flex;
+        flex-direction: column;
+        align-items: center;  /* 垂直置中 */
+    }
+
+    .areaDRecord{
+        background-color: #dddddd;
+        width: 20%;
+        height: 300px;
+        position: relative;
+        top: -921px;
+        left: 21%;
+        border-style: double;
+        border-width: 5px;
+    }
+
+    .titleDRecord{
+        text-align: center;
+        line-height: 40px;
+        font-size: 24px;
+        font-weight: bold;
+        background-color: #444444;
+        color: white;
+        height: 40px;
+    }
+
+    .forCenterDRecord{
+        display: flex;
+        flex-direction: column;
+        align-items: center;  /* 垂直置中 */
+    }
+
+    .back{
+        position: relative;
+        left: 40%;
+        top: -900px;
+        color: inherit;
+        text-decoration: none;
+        font-size: 24px;
+        border-radius: 10px;
+        padding: 10px;
+        border-style: solid;
+    }
 </style>
