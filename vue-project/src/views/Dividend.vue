@@ -1,7 +1,7 @@
 <!-- src/views/ApplyLogin.vue -->
 <script setup>
 import axios from 'axios';
-import {ref, onMounted,onUnmounted, watch} from 'vue';
+import {ref, onMounted,onUnmounted, watch, computed} from 'vue';
 import { useRouter } from 'vue-router';
 
   // 滑鼠事件
@@ -16,6 +16,10 @@ let ReturnColor=function(){
 
 
 const records=ref([]);
+
+// 分頁設置-當前頁數
+const currentPageD = ref(1);
+const itemsPerPageD = 10; // 每頁呈現10筆
 
 //建立年份選項
 const years=ref(Array.from({length: 2030-1980+1},(v,i)=>1980+i));
@@ -75,6 +79,33 @@ const fetchRecords =async ()=>{
     }
 }
 
+// 計算顯示的資料 (分頁)
+const paginatedRecordsD = computed(()=>{
+    const start = (currentPageD.value-1)*itemsPerPageD;
+    const end = start + itemsPerPageD;
+    return records.value.slice(start, end);
+});
+
+// 計算總頁數 
+const totalPagesD = computed(()=>{
+    return Math.ceil(records.value.length / itemsPerPageD);
+});
+
+// 切換上一頁 
+const prevPageD = () =>{
+    if (currentPageD.value > 1){
+        currentPageD.value--;
+    }
+};
+
+// 切換下一頁 
+const nextPageD = ()=>{
+    if(currentPageD.value < totalPagesD.value){
+        currentPageD.value++;
+    }
+};
+
+
 onMounted(()=>{
     fetchRecords();
 });
@@ -86,24 +117,24 @@ onMounted(()=>{
         <div class="titleDividend">Dividend</div>
         <div class="forCenterDividend">
             <form @submit.prevent="submitForm">
-        <div>年
+        <span style="margin-top: 20px; display: inline-block;">年
             <select v-model="selectyear" >
                 <option v-for="year in years" :key="year" :value="year">{{ year }}</option>
             </select>
-        </div>
-        <div>月
+        </span>
+        <span>月
             <select v-model="selectmonth">
                 <option v-for="month in months" :key="month" :value="month">{{ month }}</option>
             </select>
-        </div>
-        <div>日
+        </span>
+        <span>日
             <select v-model="selectday">
                 <option v-for="day in days" :key="day" :value="day">{{ day }}</option>
             </select>
-        </div>
-        <div>代號<input  v-model="code" required pattern="[a-zA-Z0-9]{3,10}" placeholder="請輸入ETF代碼"/></div>
-        <div>股利總額<input  v-model="price" required pattern="\d{1,12}" placeholder="總股利金額，含手續費" /></div>
-        <button type="submit">送出</button>
+        </span>
+        <div>代號 <input  v-model="code" required pattern="[a-zA-Z0-9]{3,10}" placeholder="請輸入ETF代碼" style="border-radius: 5px; margin-top: 30px; height: 20px;"/></div>
+        <div>股利總額 <input  v-model="price" required pattern="\d{1,12}" placeholder="總股利金額，含手續費" style="border-radius: 5px; margin-top: 30px; height: 20px;"/></div>
+        <button type="submit" style="margin-top: 30px;">送出</button>
     </form>
         </div>
     </div>
@@ -121,7 +152,7 @@ onMounted(()=>{
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="record in records">
+                    <tr v-for="record in paginatedRecordsD">
                         <td>{{ record.date.split('T')[0] }}</td>
                         <td>{{ record.code }}</td>
                         <td>{{ record.price }}</td>
@@ -129,6 +160,9 @@ onMounted(()=>{
                 </tbody>
             </table>
         </div>
+        <button @click="prevPageD" :disabled="currentPageD===1" style="position: absolute; z-index: 9996; top:320px; left: 10px">Prev</button>
+        <button @click="nextPageD" :disabled="currentPageD===totalPagesD" style="position: absolute; z-index: 9995; top: 320px; left: 300px;">Next</button>
+        <p style="position: absolute; top: 305px; left: 150px">Page {{ currentPageD }} of {{ totalPagesD }}</p>
     </div>
 
 
@@ -145,9 +179,9 @@ onMounted(()=>{
     .areaDividend{
         background-color: #dddddd;
         width: 20%;
-        height: 300px;
+        height: 350px;
         position: relative;
-        top: -612px;
+        top: -702px;
         border-style: double;
         border-width: 5px;
     }
@@ -171,9 +205,9 @@ onMounted(()=>{
     .areaDRecord{
         background-color: #dddddd;
         width: 20%;
-        height: 300px;
+        height: 350px;
         position: relative;
-        top: -921px;
+        top: -1061px;
         left: 21%;
         border-style: double;
         border-width: 5px;
@@ -198,7 +232,7 @@ onMounted(()=>{
     .back{
         position: relative;
         left: 40%;
-        top: -900px;
+        top: -1040px;
         color: inherit;
         text-decoration: none;
         font-size: 24px;

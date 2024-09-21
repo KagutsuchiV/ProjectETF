@@ -26,14 +26,24 @@ function updateDays(){
 watch([selectYear, selectMonth], updateDays);
 
 // 切換買or賣
+let Buy = ref("color: red; font-weight: bold; font-size: 36px;");
+let Sale = ref("color: black; font-weight: normal; font-size: 24px;");
+
 const mode=ref("buy");
 let buttonA=ref("background-color: red");
+
 function modeBuy(){
+  Buy.value="color: red; font-weight: bold; font-size: 36px;";
+  Sale.value="color: black; font-weight: normal; font-size: 24px;";
+
   mode.value="buy";
   buttonA.value="background-color: red";
 }
 
 function modeSale(){
+  Buy.value="color: black; font-weight: normal; font-size: 24px;";
+  Sale.value="color: green; font-weight: bold; font-size: 36px;";
+
   mode.value="sale";
   buttonA.value="background-color: green";
 }
@@ -91,7 +101,6 @@ const submitForm =async () =>{
     console.error(error);
   }
 }
-
 </script>
 
 <template>
@@ -99,28 +108,29 @@ const submitForm =async () =>{
       <div class="titleA">Buy & Sale</div>
       <div class="forCenterA">
         <form @submit.prevent="submitForm">
-            <sus @click="modeBuy">買</sus><sus @click="modeSale">賣</sus>
-            <div>年 
+            <sus>模式:   </sus><sus @click="modeBuy" :style="Buy" class="Buy">買</sus><sus @click="modeSale" :style="Sale" class="Sale">賣</sus>
+            <div></div>
+            <sus>年 
               <select v-model="selectYear" required>
                 <option v-for="year in years" :key="year" :value="year">{{ year }}</option>
               </select>
-            </div>
-            <div>月 
+            </sus>
+            <sus>月 
               <select v-model="selectMonth" required>
                 <option v-for="month in months" :key="month" :value="month">{{ month }}</option>
               </select>
-            </div>
-            <div>日 
+            </sus>
+            <sus>日 
               <select v-model="selectDay" required>
                 <option v-for="day in days" :key="day" :value="day">{{ day }}</option>
               </select>
-            </div>
-            <div>代號 <input v-model="code" required pattern="[a-zA-Z0-9]{3,10}" placeholder="請輸入ETF代碼"/></div>
-            <div>張數 <input v-model="number" required pattern="\d{1,5}"/></div>
-            <div>價格 <input v-model="price" required pattern="\d{1,12}" placeholder="總交易金額，不含手續費"/></div>
-            <div v-if="mode=='sale'">收益<input v-model="revenue" required pattern="\d{1,12}" placeholder="收益金額，不含手續費"/></div>
-            <div>手續費 <input v-model="fee" required pattern="\d{1,10}"/></div>
-            <button type="submit" :style="buttonA">送出</button>
+            </sus>
+            <div>代號 <input v-model="code" required pattern="[a-zA-Z0-9]{3,10}" placeholder="請輸入ETF代碼" style="border-radius: 5px; margin-top: 10px; height: 20px;"/></div>
+            <div>張數 <input v-model="number" required pattern="\d{1,5}" style="border-radius: 5px; margin-top: 10px; height: 20px;"/></div>
+            <div>價格 <input v-model="price" required pattern="\d{1,12}" placeholder="總交易金額，不含手續費" style="border-radius: 5px; margin-top: 10px; height: 20px;"/></div>
+            <div v-if="mode=='sale'">收益<input v-model="revenue" required pattern="\d{1,12}" placeholder="收益金額，不含手續費" style="border-radius: 5px; margin-top: 10px; height: 20px;"/></div>
+            <div>手續費 <input v-model="fee" required pattern="\d{1,10}" style="border-radius: 5px; margin-top: 10px; height: 20px;"/></div>
+            <button type="submit" :style="buttonA" style="cursor: pointer; margin-top: 15px;">送出</button>
         </form>
       </div>
 
@@ -137,7 +147,7 @@ const submitForm =async () =>{
   .areaA{
     background-color: #dddddd;
     width: 20%;
-    height: 300px;
+    height: 350px;
     position: relative;
     top: -5px;
     border-style: double;
@@ -159,4 +169,5 @@ const submitForm =async () =>{
     flex-direction: column;
     align-items: center;  /* 垂直置中 */
   }
+
 </style>

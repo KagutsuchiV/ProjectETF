@@ -84,7 +84,7 @@ import {ref} from 'vue';
       <form @submit.prevent="submitForm">
           <div class="contentA">帳號:<input v-model="account" required placeholder="請輸入您的帳號" pattern="[a-zA-Z0-9]{8,16}" /></div>
           <div class="contentA">密碼:<input v-model="password" type="password" required placeholder="請輸入您的密碼" pattern="[a-zA-Z0-9]{8,16}" /></div>
-          <div class="outer"><span class="contentB">驗證碼:<input v-model="usercaptcha" required /></span><span @click="generateCaptcha">{{ captcha }}</span></div>
+          <div class="outer"><span class="contentB">驗證碼:<input v-model="usercaptcha" required /></span><span class="verify" @click="generateCaptcha">{{ captcha }}</span></div>
           <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
           <!-- <div v-if="captchaError" class="error">{{ captchaError }}</div> -->
           <button type="submit" class="bottonA" :style="buttonA" @mouseover="ChangeColorA" @mouseleave="ReturnColorA">登入會員</button>
@@ -184,5 +184,26 @@ import {ref} from 'vue';
     text-align: center;
     margin-top: 20px;
     font-weight: bold;
+  }
+
+  .verify{
+    background-color: aliceblue;
+    background-image: radial-gradient(circle, black 10%, transparent 20%);
+    background-size: 10px 15px; /* 調整斑點間距與大小 */
+    font-size: 24px;
+    font-weight: bold;
+    position: relative;
+    left: 10px;
+    top: -1px;
+    user-select: none;
+    border-style: solid;
+    border-radius: 5px;
+    border-width: 1px;
+    width: 100px;
+    height: 30px;            /* 必須設置高度 */
+    display: flex;
+    justify-content: center;  /* 水平置中 */
+    align-items: center;      /* 垂直置中 */
+
   }
 </style>

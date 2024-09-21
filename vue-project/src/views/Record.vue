@@ -1,12 +1,22 @@
 <!-- src/views/ApplyLogin.vue -->
 <script setup>
 import axios from 'axios';
-import {ref, onMounted,onUnmounted} from 'vue';
+import {ref, onMounted,onUnmounted, computed} from 'vue';
 import { eventBus, eventBusSale } from './eventBus';
+
+document.body.style.overflow = 'hidden';
 
 // 儲存資料庫的資料
 const records =ref([]);
 const recordsales=ref([]);
+
+// 買入分頁設置-當前頁數
+const currentPageBuy = ref(1);
+const itemsPerPageBuy = 10; // 每頁呈現10筆
+
+// 賣出分頁設置-當前頁數
+const currentPageSale = ref(1);
+const itemsPerPageSale = 10;
 
 // 從後端獲取資料
 const fetchRecords = async()=>{
@@ -18,6 +28,33 @@ const fetchRecords = async()=>{
     }
 };
 
+// 計算顯示的資料 (分頁) buy
+const paginatedRecordsBuy = computed(()=>{
+    const start = (currentPageBuy.value-1)*itemsPerPageBuy;
+    const end = start + itemsPerPageBuy;
+    return records.value.slice(start, end);
+});
+
+// 計算總頁數 buy
+const totalPagesBuy = computed(()=>{
+    return Math.ceil(records.value.length / itemsPerPageBuy);
+});
+
+// 切換上一頁 buy
+const prevPageBuy = () =>{
+    if (currentPageBuy.value > 1){
+        currentPageBuy.value--;
+    }
+};
+
+// 切換下一頁 buy
+const nextPageBuy = ()=>{
+    if(currentPageBuy.value < totalPagesBuy.value){
+        currentPageBuy.value++;    
+    }
+};
+
+
 const fetchRecordsales =async() =>{
     try{
         const response= await axios.get('http://localhost:3000/getRecordSales');
@@ -26,6 +63,33 @@ const fetchRecordsales =async() =>{
         console.error('Faided to fetch recordsales', error);
     }
 }
+
+// 計算顯示的資料 (分頁) sale
+const paginatedRecordsSale = computed(()=>{
+    const start = (currentPageSale.value-1)*itemsPerPageSale;
+    const end = start + itemsPerPageSale;
+    console.log(`Start: ${start}, End: ${end}, Current Page: ${currentPageSale.value}`);
+    return recordsales.value.slice (start, end);
+});
+
+// 計算總頁數 sale
+const totalPagesSale = computed(()=>{
+    return Math.ceil(recordsales.value.length / itemsPerPageSale);
+})
+
+// 切換上一頁 sale
+const prevPageSale = ()=>{
+    if(currentPageSale.value > 1){
+        currentPageSale.value--;
+    }
+};
+
+// 切換下一頁 sale
+const nextPageSale = ()=>{
+    if(currentPageSale.value < totalPagesSale.value){
+        currentPageSale.value++;
+    }
+};
 
 onMounted(() => {
   fetchRecords(); // 首次加載數據
@@ -58,7 +122,7 @@ onUnmounted(() => {
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="record in records">
+                <tr v-for="record in paginatedRecordsBuy" :key="record.id">
                     <td>{{ record.date.split('T')[0] }}</td>
                     <td>{{ record.code }}</td>
                     <td>{{ record.number }}</td>
@@ -68,7 +132,9 @@ onUnmounted(() => {
             </tbody>
         </table>
         </div>
-
+        <button @click="prevPageBuy" :disabled="currentPageBuy===1" style="position: absolute; top: 320px; left: 10px">Prev</button>
+        <button @click="nextPageBuy" :disabled="currentPageBuy===totalPagesBuy" style="z-index: 9999; position: absolute; top:320px; left: 300px">Next</button>
+        <p style="position: absolute; top: 305px; left: 150px">Page {{ currentPageBuy }} of {{ totalPagesBuy }}</p>
     </div>
 
     <div class="areaSale">
@@ -86,7 +152,7 @@ onUnmounted(() => {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="recordsale in recordsales">
+                    <tr v-for="recordsale in paginatedRecordsSale" :key="recordsale.id">
                         <td>{{ recordsale.date.split('T')[0] }}</td>
                         <td>{{ recordsale.code }}</td>
                         <td>{{ recordsale.number }}</td>
@@ -97,7 +163,9 @@ onUnmounted(() => {
                 </tbody>
             </table>
         </div>
-
+        <button @click="prevPageSale" :disabled="currentPageSale===1" style="z-index: 9998; position: absolute; top:320px; left: 10px">Prev</button>
+        <button @click="nextPageSale" :disabled="currentPageSale===totalPagesSale" style="z-index: 9998; position: absolute; top: 320px; left: 300px">Next</button>
+        <p style="position: absolute; top: 305px; left: 150px">Page {{ currentPageSale }} of {{ totalPagesSale }}</p>
     </div>
 
 </template>
@@ -112,9 +180,9 @@ onUnmounted(() => {
     .areaBuy{
         background-color: #dddddd;
         width: 20%;
-        height: 300px;
+        height: 350px;
         position: relative;
-        top: -313.5px;
+        top: -364px;
         left: 21%;
         border-style: double;
         border-width: 5px;
@@ -139,9 +207,9 @@ onUnmounted(() => {
     .areaSale{
         background-color: #dddddd;
         width: 20%;
-        height: 300px;
+        height: 350px;
         position: relative;
-        top: -623.5px;
+        top: -724px;
         left: 42%;
         border-style: double;
         border-width: 5px;

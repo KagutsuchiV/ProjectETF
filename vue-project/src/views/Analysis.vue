@@ -1,6 +1,6 @@
 <script setup>
 import axios from 'axios';
-import {ref, onMounted, onUnmounted} from 'vue';
+import {ref, onMounted, onUnmounted, computed} from 'vue';
 
 import { eventBusAnalysis } from './eventBus';
 import {Chart, registerables} from 'chart.js';
@@ -13,6 +13,10 @@ const chartRef = ref(null); // 圓餅圖的canvas參考
 const price = ref('');
 
 const recordRevenues = ref([]);
+
+// 分頁設置-當前頁數
+const currentPageAna = ref(1);
+const itemsPerPageAna = 10; // 每頁呈現10筆
 
 // 從後端獲取資料
 const fetchRecords= async()=>{
@@ -45,6 +49,32 @@ const submitForm = async()=>{
         console.error('Failed to submit form', error);
     }
 }
+
+// 計算顯示的資料 (分頁)
+const paginatedRecordsAna = computed(()=>{
+    const start = (currentPageAna.value-1)*itemsPerPageAna;
+    const end = start + itemsPerPageAna;
+    return records.value.slice(start, end);
+});
+
+// 計算總頁數 
+const totalPagesAna = computed(()=>{
+    return Math.ceil(records.value.length / itemsPerPageAna);
+});
+
+// 切換上一頁 
+const prevPageAna = () =>{
+    if (currentPageAna.value > 1){
+        currentPageAna.value--;
+    }
+};
+
+// 切換下一頁 
+const nextPageAna = ()=>{
+    if(currentPageAna.value < totalPagesAna.value){
+        currentPageAna.value++;
+    }
+};
 
 // 從後端獲取資料-總收益
 const fetchRecordsRevenue = async()=>{
@@ -124,6 +154,9 @@ onUnmounted(()=>{
                 </tbody>
             </table>
         </div>
+        <button @click="prevPageAna" :disabled="currentPageAna===1" style="position: absolute; top: 320px; left: 10px; z-index: 9995;">Prev</button>
+        <button @click="nextPageAna" :disabled="currentPageAna===totalPagesAna" style="position: absolute; top: 320px; left: 300px; z-index: 9994;">Next</button>
+        <p style="position: absolute; top: 305px; left: 150px">Page {{ currentPageAna }} of {{ totalPagesAna }}</p>
     </div>
 
 
@@ -167,9 +200,9 @@ onUnmounted(()=>{
     .areaAnalysis{
         background-color: #dddddd;
         width: 20%;
-        height: 300px;
+        height: 350px;
         position: relative;
-        top: -1262px;
+        top: -1452px;
         left: 42%;
         border-style: double;
         border-width: 5px;
@@ -194,9 +227,9 @@ onUnmounted(()=>{
     .areaR{
         background-color: #dddddd;
         width: 20%;
-        height: 300px;
+        height: 350px;
         position: relative;
-        top: -1871px;
+        top: -2111px;
         left: 63%;
         border-style: double;
         border-width: 5px;
@@ -220,7 +253,7 @@ onUnmounted(()=>{
 
     .photo{
         position: relative;
-        top: -1900px;
+        top: -2150px;
         left: 450px;
 
     }
