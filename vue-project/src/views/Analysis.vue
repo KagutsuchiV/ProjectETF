@@ -143,13 +143,13 @@ onUnmounted(()=>{
                 <thead>
                     <tr>
                         <th>ETF</th>
-                        <th>百分比</th>
+                        <th>百分比 (%)</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="record in records" :key="record.code">
                         <td>{{ record.code }}</td>
-                        <td>{{ record.price_percentage }}</td>
+                        <td>{{ Number(record.price_percentage).toFixed(2) }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -170,10 +170,10 @@ onUnmounted(()=>{
     <div class="titleR">計算你目前的收益</div>
     <div class="forCenterR">
         <form @submit.prevent="submitForm">
-            <div>目前總價差 <input  v-model="price" required pattern="\d{1,12}" placeholder="" /></div>
-            <button type="submit">計算收益</button>
+            <div style="margin-top: 40px;">目前總價差 <input  v-model="price" required pattern="\d{1,12}" placeholder="" /></div>
+            <button type="submit" style="margin-top: 10px;">計算收益</button>
         </form>
-        <div>總收益紀錄</div>
+        <div style="margin-top: 20px;" class="titleAR">總收益紀錄</div>
         <table>
             <thead>
                 <tr>
@@ -184,9 +184,9 @@ onUnmounted(()=>{
             </thead>
             <tbody>
                 <tr v-for="recordRevenue in recordRevenues" :key="recordRevenue.code">
-                    <td>{{ recordRevenue.Selected_date}}</td>
-                    <td>{{ recordRevenue.total_sum }}</td>
-                    <td>{{ recordRevenue.ratio }}</td>
+                    <td>{{ recordRevenue.Selected_date.split('T')[0]}}</td>
+                    <td>{{ Math.round(recordRevenue.total_sum) }}</td>
+                    <td>{{ Number(recordRevenue.ratio).toFixed(2) }}</td>
                 </tr>
             </tbody>
         </table>
@@ -251,10 +251,36 @@ onUnmounted(()=>{
         align-items: center;  /* 垂直置中 */
     }
 
+    .titleAR{
+        text-align: center;
+        line-height: 40px;
+        font-size: 24px;
+        font-weight: bold;
+        background-color: #444444;
+        color: white;
+        height: 40px;
+        width: 380px;        
+    }
+
     .photo{
         position: relative;
         top: -2150px;
         left: 450px;
 
     }
+
+    table {
+        border-collapse: collapse; /* 避免重複邊框 */
+        width: 100%; /* 可根據需求設定寬度 */
+    }
+
+    th, td {
+        border: 1px solid black; /* 設定表格框線 */
+        padding: 2px; /* 設定表格內邊距 */
+        text-align: center; /* 調整文字對齊方式，可選 */
+    }
+
+    th {
+        background-color: #f2f2f2; /* 可選，設置表頭背景色 */
+    } 
 </style>

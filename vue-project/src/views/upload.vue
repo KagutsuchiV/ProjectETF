@@ -45,7 +45,7 @@ const uploadAvatar =async()=>{
       <button type="submit" class="uploadfile">上傳</button>
     </form>
     </div>
-
+    <div style="font-weight: bold; position: absolute; top: 275px; left: 5px">※ 檔案類型僅接受jpg/ jpeg/ png</div>
   </div>
 
 </template>

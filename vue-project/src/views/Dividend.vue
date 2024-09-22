@@ -155,7 +155,7 @@ onMounted(()=>{
                     <tr v-for="record in paginatedRecordsD">
                         <td>{{ record.date.split('T')[0] }}</td>
                         <td>{{ record.code }}</td>
-                        <td>{{ record.price }}</td>
+                        <td>{{ Math.round(record.price) }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -240,4 +240,19 @@ onMounted(()=>{
         padding: 10px;
         border-style: solid;
     }
+
+    table {
+        border-collapse: collapse; /* 避免重複邊框 */
+        width: 100%; /* 可根據需求設定寬度 */
+    }
+
+    th, td {
+        border: 1px solid black; /* 設定表格框線 */
+        padding: 2px; /* 設定表格內邊距 */
+        text-align: center; /* 調整文字對齊方式，可選 */
+    }
+
+    th {
+        background-color: #f2f2f2; /* 可選，設置表頭背景色 */
+    } 
 </style>

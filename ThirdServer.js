@@ -93,8 +93,22 @@ const storage = multer.diskStorage({
     }
 });
 
-// 設定上傳中介軟體
-const upload = multer({storage: storage});
+// 設定上傳中介軟體並加入 fileFilter 檔案類型過濾
+const upload = multer({
+    storage: storage,
+    fileFilter: (req, file, cb) => {
+        // 限制接受的檔案類型
+        const fileTypes = /jpeg|jpg|png/;
+        const mimeType = fileTypes.test(file.mimetype); // 檢查檔案的 MIME 類型
+        const extName = fileTypes.test(path.extname(file.originalname).toLowerCase()); // 檢查副檔名
+
+        if (mimeType && extName) {
+            return cb(null, true); // 接受檔案
+        } else {
+            cb(new Error("檔案類型不支援，只能上傳 jpeg, jpg, png 格式的檔案"));
+        }
+    }
+});
 
 module.exports = (pool)=>{
     router.post('/uploadAvatar', upload.single('avatar'), (req,res)=>{
