@@ -19,23 +19,42 @@ router.get('/test', (req, res) => {
     res.send('Hello from fourth Server');
 });
 
+// 定義爬蟲變數
+let sixAsset;
+let sixDate;
+let sixPrice;
+
+
+
 // 第四分流伺服器中的 router
 router.post('/uploadData', (req, res) => {
-    const { all_name, found_date, price } = req.body;
+    const { asset_size, found_date, price } = req.body;
 
     console.log('Received data:', req.body); // 輸出接收到的資料
 
-    if (!all_name || !found_date || !price) {
+    if (!asset_size || !found_date || !price) {
         console.log('資料不完整'); // 當資料不完整時輸出
         return res.status(400).json({ message: '資料不完整' });
     }
 
     // 正常處理資料
-    console.log(`全名: ${all_name}, 成立日: ${found_date}, 價格: ${price}`);
+    sixAsset=asset_size;
+    sixDate=found_date;
+    sixPrice=price;
+    console.log(`00919資產規模: ${asset_size}, 成立日: ${found_date}, 價格: ${price}`);
     res.json({ message: 'Data received successfully' });
 });
 
+// sixETF to vue
 
+router.get('/sixETF', (req, res) => {
+    const sixETFData = {
+        sixAsset: sixAsset,
+        sixDate: sixDate,
+        sixPrice: sixPrice
+    };
+    res.json(sixETFData);
+})
 
 
 module.exports = router;

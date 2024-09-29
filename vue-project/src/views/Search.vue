@@ -1,5 +1,7 @@
 <script setup>
+import axios from 'axios';
 import {ref} from 'vue';
+import {onMounted,onUnmounted} from 'vue';
 
 let styles ={
     first: ref("background-color: white"),
@@ -18,6 +20,39 @@ let ChangeColor = function(key){
 let ReturnColor = function(key){
     styles[key].value="background-color: white";
 }
+
+// 爬蟲six
+let sixLighting=ref(false);
+let sixAsset=ref("");
+let sixDate=ref("");
+let sixPrice=ref(""); 
+const fetchsixETF = async() => {
+    sixLighting.value = true; 
+    try{
+        const response = await axios.get('http://localhost:3000/FourthServer/sixETF');
+        console.log(response.data); // 檢查 API 返回的數據
+        sixDate.value=response.data.sixDate;
+        sixAsset.value=response.data.sixAsset;
+        sixPrice.value=response.data.sixPrice;
+    }catch(error){
+        console.error('Faided to fetch sixETF', error);
+    }finally{
+        setTimeout(() => {
+            sixLighting.value = false;
+        }, 1000);
+    };
+};
+
+onMounted(() => {
+    fetchsixETF(); // 先立即調用一次
+    const interval = setInterval(fetchsixETF, 10000); // 每 10 秒調用一次
+
+    // 清除定時器以避免內存泄漏
+    onUnmounted(() => {
+        clearInterval(interval);
+    });
+});
+
 </script>
 
 <template>
@@ -83,9 +118,9 @@ let ReturnColor = function(key){
             <div class="forCenter">
                 <div style="font-size: 30px; font-weight: bold; padding-bottom: 5px; padding-top: 10px;">00919</div>
                 <div style="font-size: 24px; font-weight: bold; padding-bottom: 10px;">群益台灣精選高息</div>
-                <div style="padding-bottom: 5px;">成交價: 24.09</div>
-                <div style="padding-bottom: 5px;">資產規模: 260,741.00百萬</div>
-                <div style="padding-bottom: 20px;">成立日: 2022/10/13</div>
+                <div style="padding-bottom: 5px;" :style="{ color: sixLighting ? 'red' : 'black', fontWeight: sixLighting ? 'bold' : 'normal' }">成交價: {{ sixPrice }}</div>
+                <div style="padding-bottom: 5px;">資產規模: {{ sixAsset }}百萬</div>
+                <div style="padding-bottom: 20px;">成立日: {{ sixDate }}</div>
                 <div class="link" :style="styles.sixth.value" @mouseover="ChangeColor('sixth')" @mouseleave="ReturnColor('sixth')"><a href="https://tw.stock.yahoo.com/quote/00919.TW" target="blank">相關連結-外部網站</a></div>
             </div>
         </div>
