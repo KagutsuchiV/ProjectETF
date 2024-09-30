@@ -19,30 +19,55 @@ router.get('/test', (req, res) => {
     res.send('Hello from fourth Server');
 });
 
-// 定義爬蟲變數
-let sixAsset;
-let sixDate;
-let sixPrice;
-
-
-
 // 第四分流伺服器中的 router
+let sixAsset = [];
+let sixDate = [];
+let sixStockId = [];
+
+let sixCode = [];
+let sixPrice = [];
+
 router.post('/uploadData', (req, res) => {
-    const { asset_size, found_date, price } = req.body;
+    const { stock_id, asset_size, found_date} = req.body;
 
     console.log('Received data:', req.body); // 輸出接收到的資料
 
-    if (!asset_size || !found_date || !price) {
+    if (!stock_id || !asset_size || !found_date) {
         console.log('資料不完整'); // 當資料不完整時輸出
         return res.status(400).json({ message: '資料不完整' });
     }
 
+    console.log(`Received data: ${JSON.stringify(req.body)}`); // 更改輸出格式
+    console.log(`${stock_id} 資產規模: ${asset_size}, 成立日: ${found_date}`); 
+    
+    sixAsset.push(asset_size);
+    sixDate.push(found_date);
+    sixStockId.push(stock_id);
+
     // 正常處理資料
-    sixAsset=asset_size;
-    sixDate=found_date;
-    sixPrice=price;
-    console.log(`00919資產規模: ${asset_size}, 成立日: ${found_date}, 價格: ${price}`);
     res.json({ message: 'Data received successfully' });
+});
+
+
+// 動態價格查詢
+router.post('/uploadDataPrice', (req,res)=> {
+    const { code, price_text }=req.body;
+
+    console.log('Received dataPrice', req.body);
+
+    if (!code || !price_text){
+        console.log('Price資料不完整'); // 當資料不完整時輸出
+        return res.status(400).json({ message: 'Price資料不完整' });
+    }
+
+    console.log(`Received data: ${JSON.stringify(req.body)}`);
+    console.log(`${code} 價格: ${price_text}`);
+
+    sixPrice.push(price_text);
+    sixCode.push(code);
+
+    // 正常處理資料
+    res.json({message: 'Data received successfully'});
 });
 
 // sixETF to vue
@@ -51,9 +76,17 @@ router.get('/sixETF', (req, res) => {
     const sixETFData = {
         sixAsset: sixAsset,
         sixDate: sixDate,
-        sixPrice: sixPrice
+        sixStockId: sixStockId
     };
     res.json(sixETFData);
+})
+
+router.get('/sixETFPrice', (req,res) =>{
+    const sixETFDataPrice = {
+        sixPrice: sixPrice,
+        sixCode: sixCode
+    };
+    res.json(sixETFDataPrice);
 })
 
 

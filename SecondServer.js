@@ -6,18 +6,20 @@ router.use(express.json());
 // const { json } = require('body-parser');
 
 // 提取資料庫查詢的函數
-const queryDatabase = (req, res, query, account)=>{
+const queryDatabase = (req, res, query, params) => {
     const pool = req.app.get('pool');
 
-    pool.query(query, [account], (err, results) =>{
-        if(err){
+    pool.query(query, params, (err, results) => {
+        if (err) {
             console.error(err);
-            res.status(500).json({message: 'Database query error'});
+            res.status(500).json({ message: 'Database query error', error: err.message });
             return;
         }
-        res.status(200).json({results});
+        console.log(results);
+        res.status(200).json({ results });
     });
 };
+
 
 // 提取資料庫查詢的函數-2
 const queryDatabaseB = (req, res, query, params) => {
@@ -53,33 +55,54 @@ router.get('/getPercentage', (req,res)=>{
 
     const account=req.session.user.account;
     const query=
-    `WITH total_prices AS (
-        SELECT 
-            code,
-            SUM(price * number + fee) AS total_price
-        FROM 
-            ERA
-        WHERE 
-            account = ?
-        GROUP BY 
-            code
-    ),
-    account_total AS (
-        SELECT 
-            SUM(total_price) AS account_total_price
-        FROM 
-            total_prices
-    )
-        SELECT 
-            tp.code,
-            tp.total_price,
-            (tp.total_price / at.account_total_price) * 100 AS price_percentage
-        FROM 
-            total_prices tp
-    CROSS JOIN 
-        account_total at;`;
+    `WITH total_buy AS (
+    SELECT 
+        code,
+        SUM(price * number + fee) AS total_buy_price  -- 計算總買入價（含手續費）
+    FROM 
+        ERA
+    WHERE 
+        account = ?
+    GROUP BY 
+        code
+),
+total_sell AS (
+    SELECT 
+        code,
+        SUM(price * number - fee) AS total_sell_price  -- 計算總賣出價（扣除手續費）
+    FROM 
+        ERAsale
+    WHERE 
+        account = ?
+    GROUP BY 
+        code
+),
+net_cost AS (
+    SELECT 
+        b.code,
+        GREATEST(b.total_buy_price - COALESCE(s.total_sell_price, 0), 0) AS total_price  -- 計算淨成本，不為負
+    FROM 
+        total_buy b
+    LEFT JOIN 
+        total_sell s ON b.code = s.code
+),
+account_total AS (
+    SELECT 
+        SUM(total_price) AS account_total_price
+    FROM 
+        net_cost
+)
 
-    queryDatabase(req,res,query,account);
+SELECT 
+    tp.code,
+    tp.total_price,
+    (tp.total_price / at.account_total_price) * 100 AS price_percentage
+FROM 
+    net_cost tp,
+    account_total at;
+`;
+
+    queryDatabase(req,res,query, [account, account]);
 });
 
 

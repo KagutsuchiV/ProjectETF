@@ -23,16 +23,25 @@ let ReturnColor = function(key){
 
 // 爬蟲six
 let sixLighting=ref(false);
-let sixAsset=ref("");
-let sixDate=ref("");
-let sixPrice=ref(""); 
+let sixAsset=ref([]);
+let sixDate=ref([]);
+let sixPrice=ref([]);
+
 const fetchsixETF = async() => {
-    sixLighting.value = true; 
     try{
         const response = await axios.get('http://localhost:3000/FourthServer/sixETF');
         console.log(response.data); // 檢查 API 返回的數據
         sixDate.value=response.data.sixDate;
         sixAsset.value=response.data.sixAsset;
+    }catch(error){
+        console.error('Faided to fetch sixETF', error);
+    };
+};
+
+const fetchsixETFPrice = async() =>{
+    sixLighting.value = true; 
+    try{
+        const response= await axios.get('http://localhost:3000/FourthServer/sixETFPrice');
         sixPrice.value=response.data.sixPrice;
     }catch(error){
         console.error('Faided to fetch sixETF', error);
@@ -41,11 +50,16 @@ const fetchsixETF = async() => {
             sixLighting.value = false;
         }, 1000);
     };
-};
+}
 
 onMounted(() => {
     fetchsixETF(); // 先立即調用一次
-    const interval = setInterval(fetchsixETF, 10000); // 每 10 秒調用一次
+    fetchsixETFPrice();
+
+    const interval = setInterval(() => {
+        fetchsixETF();
+        fetchsixETFPrice();
+    }, 60000); // 每 60 秒調用一次
 
     // 清除定時器以避免內存泄漏
     onUnmounted(() => {
@@ -57,15 +71,15 @@ onMounted(() => {
 
 <template>
     <div class="search">
-        <div class="hot">人氣ETF-排行榜-2024.09.17</div>
+        <div class="hot">人氣ETF-排行榜</div>
 
         <div class="first">
             <div class="forCenter">
                 <div style="font-size: 30px; font-weight: bold; padding-bottom: 5px; padding-top: 10px;">0050</div>
                 <div style="font-size: 24px; font-weight: bold; padding-bottom: 10px;">元大台灣50</div>
-                <div style="padding-bottom: 5px;">成交價: 178.75</div>
-                <div style="padding-bottom: 5px;">資產規模: 395,428.00百萬</div>
-                <div style="padding-bottom: 20px;">成立日: 2017/01/11</div>
+                <div style="padding-bottom: 5px;" :style="{ color: sixLighting ? 'red' : 'black', fontWeight: sixLighting ? 'bold' : 'normal' }">成交價: {{ sixPrice[0] }}</div>
+                <div style="padding-bottom: 5px;">資產規模: {{ sixAsset[0] }}百萬</div>
+                <div style="padding-bottom: 20px;">成立日: {{ sixDate[0] }}</div>
                 <div class="link" :style="styles.first.value" @mouseover="ChangeColor('first')" @mouseleave="ReturnColor('first')"><a href="https://tw.stock.yahoo.com/quote/0050.TW" target="blank">相關連結-外部網站</a></div>
             </div>
         </div>
@@ -74,9 +88,9 @@ onMounted(() => {
             <div class="forCenter">
                 <div style="font-size: 30px; font-weight: bold; padding-bottom: 5px; padding-top: 10px;">00878</div>
                 <div style="font-size: 24px; font-weight: bold; padding-bottom: 10px;">國泰永續高股息</div>
-                <div style="padding-bottom: 5px;">成交價: 22.31</div>
-                <div style="padding-bottom: 5px;">資產規模: 317,918.00百萬</div>
-                <div style="padding-bottom: 20px;">成立日: 2020/07/10</div>
+                <div style="padding-bottom: 5px;" :style="{ color: sixLighting ? 'red' : 'black', fontWeight: sixLighting ? 'bold' : 'normal' }">成交價: {{ sixPrice[1] }}</div>
+                <div style="padding-bottom: 5px;">資產規模: {{ sixAsset[1] }}百萬</div>
+                <div style="padding-bottom: 20px;">成立日: {{ sixDate[1] }}</div>
                 <div class="link" :style="styles.second.value" @mouseover="ChangeColor('second')" @mouseleave="ReturnColor('second')"><a href="https://tw.stock.yahoo.com/quote/00878.TW" target="blank">相關連結-外部網站</a></div>
             </div>
         </div>
@@ -85,9 +99,9 @@ onMounted(() => {
             <div class="forCenter">
                 <div style="font-size: 30px; font-weight: bold; padding-bottom: 5px; padding-top: 10px;">0056</div>
                 <div style="font-size: 24px; font-weight: bold; padding-bottom: 10px;">元大高股息</div>
-                <div style="padding-bottom: 5px;">成交價: 37.98</div>
-                <div style="padding-bottom: 5px;">資產規模: 313,300.00百萬</div>
-                <div style="padding-bottom: 20px;">成立日: 2007/12/13</div>
+                <div style="padding-bottom: 5px;" :style="{ color: sixLighting ? 'red' : 'black', fontWeight: sixLighting ? 'bold' : 'normal' }">成交價: {{ sixPrice[2] }}</div>
+                <div style="padding-bottom: 5px;">資產規模: {{ sixAsset[2] }}百萬</div>
+                <div style="padding-bottom: 20px;">成立日: {{ sixDate[2] }}</div>
                 <div class="link" :style="styles.third.value" @mouseover="ChangeColor('third')" @mouseleave="ReturnColor('third')"><a href="https://tw.stock.yahoo.com/quote/0056.TW" target="blank">相關連結-外部網站</a></div>
             </div>
         </div>
@@ -96,9 +110,9 @@ onMounted(() => {
             <div class="forCenter">
                 <div style="font-size: 30px; font-weight: bold; padding-bottom: 5px; padding-top: 10px;">00679B</div>
                 <div style="font-size: 24px; font-weight: bold; padding-bottom: 10px;">元大美債20年</div>
-                <div style="padding-bottom: 5px;">成交價: 31.70</div>
-                <div style="padding-bottom: 5px;">資產規模: 285,076.00百萬</div>
-                <div style="padding-bottom: 20px;">成立日: 2017/01/11</div>
+                <div style="padding-bottom: 5px;" :style="{ color: sixLighting ? 'red' : 'black', fontWeight: sixLighting ? 'bold' : 'normal' }">成交價: {{ sixPrice[3] }}</div>
+                <div style="padding-bottom: 5px;">資產規模: {{ sixAsset[3] }}百萬</div>
+                <div style="padding-bottom: 20px;">成立日: {{ sixDate[3] }}</div>
                 <div class="link" :style="styles.fourth.value" @mouseover="ChangeColor('fourth')" @mouseleave="ReturnColor('fourth')"><a href="https://tw.stock.yahoo.com/quote/00679B.TW" target="blank">相關連結-外部網站</a></div>
             </div>
         </div>
@@ -107,9 +121,9 @@ onMounted(() => {
             <div class="forCenter">
                 <div style="font-size: 30px; font-weight: bold; padding-bottom: 5px; padding-top: 10px;">00929</div>
                 <div style="font-size: 24px; font-weight: bold; padding-bottom: 10px;">復華台灣科技優息</div>
-                <div style="padding-bottom: 5px;">成交價: 19.09</div>
-                <div style="padding-bottom: 5px;">資產規模: 276,851.00百萬</div>
-                <div style="padding-bottom: 20px;">成立日: 2023/06/01</div>
+                <div style="padding-bottom: 5px;" :style="{ color: sixLighting ? 'red' : 'black', fontWeight: sixLighting ? 'bold' : 'normal' }">成交價: {{ sixPrice[4] }}</div>
+                <div style="padding-bottom: 5px;">資產規模: {{ sixAsset[4] }}百萬</div>
+                <div style="padding-bottom: 20px;">成立日: {{ sixDate[4] }}</div>
                 <div class="link" :style="styles.fifth.value" @mouseover="ChangeColor('fifth')" @mouseleave="ReturnColor('fifth')"><a href="https://tw.stock.yahoo.com/quote/00929.TW" target="blank">相關連結-外部網站</a></div>
             </div>
         </div>
@@ -118,9 +132,9 @@ onMounted(() => {
             <div class="forCenter">
                 <div style="font-size: 30px; font-weight: bold; padding-bottom: 5px; padding-top: 10px;">00919</div>
                 <div style="font-size: 24px; font-weight: bold; padding-bottom: 10px;">群益台灣精選高息</div>
-                <div style="padding-bottom: 5px;" :style="{ color: sixLighting ? 'red' : 'black', fontWeight: sixLighting ? 'bold' : 'normal' }">成交價: {{ sixPrice }}</div>
-                <div style="padding-bottom: 5px;">資產規模: {{ sixAsset }}百萬</div>
-                <div style="padding-bottom: 20px;">成立日: {{ sixDate }}</div>
+                <div style="padding-bottom: 5px;" :style="{ color: sixLighting ? 'red' : 'black', fontWeight: sixLighting ? 'bold' : 'normal' }">成交價: {{ sixPrice[5] }}</div>
+                <div style="padding-bottom: 5px;">資產規模: {{ sixAsset[5] }}百萬</div>
+                <div style="padding-bottom: 20px;">成立日: {{ sixDate[5] }}</div>
                 <div class="link" :style="styles.sixth.value" @mouseover="ChangeColor('sixth')" @mouseleave="ReturnColor('sixth')"><a href="https://tw.stock.yahoo.com/quote/00919.TW" target="blank">相關連結-外部網站</a></div>
             </div>
         </div>
@@ -129,9 +143,9 @@ onMounted(() => {
             <div class="forCenter">
                 <div style="font-size: 30px; font-weight: bold; padding-bottom: 5px; padding-top: 10px; color: red;">★00915★</div>
                 <div style="font-size: 24px; font-weight: bold; padding-bottom: 10px; color: red">凱基優選高股息30</div>
-                <div style="padding-bottom: 5px;">成交價: 26.33 -- 2024.09.20</div>
-                <div style="padding-bottom: 5px;">資產規模: 27,153.00百萬</div>
-                <div style="padding-bottom: 20px;">成立日: 2022/08/01</div>
+                <div style="padding-bottom: 5px;" :style="{ color: sixLighting ? 'red' : 'black', fontWeight: sixLighting ? 'bold' : 'normal' }">成交價: {{ sixPrice[6] }}</div>
+                <div style="padding-bottom: 5px;">資產規模: {{ sixAsset[6] }}百萬</div>
+                <div style="padding-bottom: 20px;">成立日: {{ sixDate[6] }}</div>
                 <div class="link" :style="styles.bonus.value" @mouseover="ChangeColor('bonus')" @mouseleave="ReturnColor('bonus')"><a href="https://tw.stock.yahoo.com/quote/00915.TW" target="blank">相關連結-外部網站</a></div>
             </div>
         </div>

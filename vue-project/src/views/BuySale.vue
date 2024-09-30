@@ -4,7 +4,7 @@ import axios from 'axios';
 import {ref, watch} from 'vue';
 import { useRouter } from 'vue-router';
 
-import { eventBus,eventBusSale,eventBusAnalysis } from './eventBus';
+import { eventBus,eventBusSale,eventBusAnalysis,eventBusPhoto } from './eventBus';
 
 // 建立年份選項
 const years =ref(Array.from({length: 2030 - 1980 + 1}, (v,i) => 1980 + i));
@@ -94,6 +94,9 @@ const submitForm =async () =>{
       eventBus.value.dispatchEvent(new Event('updateRecords'));
       eventBusSale.value.dispatchEvent(new Event('updateRecordSales'));
       eventBusAnalysis.value.dispatchEvent(new Event('updateAnalysis'));
+      eventBusPhoto.value.dispatchEvent(new Event('updatePhoto'));
+
+
       router.push('/ERA');
 
   }catch (error){
@@ -127,8 +130,8 @@ const submitForm =async () =>{
             </sus>
             <div>代號 <input v-model="code" required pattern="[a-zA-Z0-9]{3,10}" placeholder="請輸入ETF代碼" style="border-radius: 5px; margin-top: 10px; height: 20px;"/></div>
             <div>張數 <input v-model="number" required pattern="\d{1,5}" style="border-radius: 5px; margin-top: 10px; height: 20px;"/></div>
-            <div>價格 <input v-model="price" required pattern="\d{1,12}" placeholder="總交易金額，不含手續費" style="border-radius: 5px; margin-top: 10px; height: 20px;"/></div>
-            <div v-if="mode=='sale'">收益<input v-model="revenue" required pattern="\d{1,12}" placeholder="收益金額，不含手續費" style="border-radius: 5px; margin-top: 10px; height: 20px;"/></div>
+            <div>價格 <input v-model="price" required pattern="\d{1,12}" placeholder="單張交易金額，不含手續費" style="border-radius: 5px; margin-top: 10px; height: 20px;"/></div>
+            <div v-if="mode=='sale'">收益<input v-model="revenue" required pattern="\d{1,12}" placeholder="總收益金額，不含手續費" style="border-radius: 5px; margin-top: 10px; height: 20px;"/></div>
             <div>手續費 <input v-model="fee" required pattern="\d{1,10}" style="border-radius: 5px; margin-top: 10px; height: 20px;"/></div>
             <button type="submit" :style="buttonA" style="cursor: pointer; margin-top: 15px;">送出</button>
         </form>

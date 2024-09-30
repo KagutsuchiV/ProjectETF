@@ -2,7 +2,7 @@
 import axios from 'axios';
 import {ref, onMounted, onUnmounted, computed} from 'vue';
 
-import { eventBusAnalysis } from './eventBus';
+import { eventBusAnalysis, eventBusPhoto } from './eventBus';
 import {Chart, registerables} from 'chart.js';
 
 // 手動註冊所有必要的控制器、元素、插件等
@@ -45,6 +45,9 @@ const submitForm = async()=>{
         });
         alert('表單已成功送出！');
         console.log('successfully submit', response.data);
+
+        // 獲取最新的總收益數據
+        await fetchRecordsRevenue(); // 確保在這裡獲取數據
     }catch(error){
         console.error('Failed to submit form', error);
     }
@@ -90,7 +93,13 @@ const fetchRecordsRevenue = async()=>{
 }
 
 // 創建圓餅圖
+let pieChartInstance;
+
 const createPieChart = ()=>{
+    if (pieChartInstance) {
+        pieChartInstance.destroy(); // 銷毀舊的圖表實例
+    }
+
     if (!chartRef.value){
         console.error('canvas element not found!');
         return;
@@ -107,7 +116,7 @@ const createPieChart = ()=>{
         }]
     };
 
-    new Chart(ctx, {
+    pieChartInstance=new Chart(ctx, {
         type: 'pie', // 圓餅圖類型
         data: data,
         options: {
@@ -127,17 +136,26 @@ onMounted(()=>{
         createPieChart(); // 在數據加載完成後生成圓餅圖
     });
     fetchRecordsRevenue();
-    eventBusAnalysis.value.addEventListener('updateAnalysis', fetchRecords);
+
+    eventBusAnalysis.value.addEventListener('updateAnalysis', async () => {
+    await fetchRecords(); // 獲取最新數據
+    });
+
+    eventBusPhoto.value.addEventListener('updatePhoto', async () => {
+    await fetchRecords(); // 獲取最新數據
+    createPieChart(); // 然後生成圓餅圖
+    });
 });
 
 onUnmounted(()=>{
     eventBusAnalysis.value.removeEventListener('updateAnalysis',fetchRecords);
-})
+    eventBusPhoto.value.removeEventListener('updatePhoto', createPieChart);
+});
 </script>
 
 <template>
     <div class="areaAnalysis">
-        <div class="titleAnalysis">計算你的存股百分比</div>
+        <div class="titleAnalysis">計算你的存股百分比 (成本)</div>
         <div class="forCenterAnalysis">
             <table>
                 <thead>
@@ -147,7 +165,7 @@ onUnmounted(()=>{
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="record in records" :key="record.code">
+                    <tr v-for="record in paginatedRecordsAna" :key="record.code">
                         <td>{{ record.code }}</td>
                         <td>{{ Number(record.price_percentage).toFixed(2) }}</td>
                     </tr>
@@ -179,14 +197,14 @@ onUnmounted(()=>{
                 <tr>
                     <th>日期</th>
                     <th>總收益</th>
-                    <th>總收益百分比</th>
+                    <!-- <th>總收益百分比</th> -->
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="recordRevenue in recordRevenues" :key="recordRevenue.code">
                     <td>{{ recordRevenue.Selected_date.split('T')[0]}}</td>
                     <td>{{ Math.round(recordRevenue.total_sum) }}</td>
-                    <td>{{ Number(recordRevenue.ratio).toFixed(2) }}</td>
+                    <!-- <td>{{ Number(recordRevenue.ratio).toFixed(2) }}</td> -->
                 </tr>
             </tbody>
         </table>
