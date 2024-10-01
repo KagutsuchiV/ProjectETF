@@ -41,8 +41,9 @@ const fetchsixETF = async() => {
 const fetchsixETFPrice = async() =>{
     sixLighting.value = true; 
     try{
-        const response= await axios.get('http://localhost:3000/FourthServer/sixETFPrice');
+        const response= await axios.get(`http://localhost:3000/FourthServer/sixETFPrice`);
         sixPrice.value=response.data.sixPrice;
+        console.log("Latest price response:", response.data);
     }catch(error){
         console.error('Faided to fetch sixETF', error);
     }finally{
@@ -59,7 +60,7 @@ onMounted(() => {
     const interval = setInterval(() => {
         fetchsixETF();
         fetchsixETFPrice();
-    }, 60000); // 每 60 秒調用一次
+    }, 10000); // 每 60 秒調用一次
 
     // 清除定時器以避免內存泄漏
     onUnmounted(() => {

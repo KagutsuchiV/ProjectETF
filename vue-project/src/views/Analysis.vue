@@ -126,6 +126,20 @@ const createPieChart = ()=>{
                 legend: {
                     position: 'top',
                 },
+                title: {
+                display: true,    // 顯示標題
+                text: '存股百分比圓餅圖',  // 設定標題文字
+                font: {
+                    size: 18      // 設定標題文字大小
+                },
+                padding: {
+                    top: 0,
+                    bottom: 0
+                },
+                margin: {
+                    bottom: 10
+                }
+            }
             },
         },
     });
