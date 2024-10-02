@@ -2,7 +2,7 @@
 import axios from 'axios';
 import {ref, onMounted, onUnmounted, computed} from 'vue';
 
-import { eventBusAnalysis, eventBusPhoto } from './eventBus';
+import { eventBusAnalysis, eventBusPhoto, eventBusAllRevenue } from './eventBus';
 import {Chart, registerables} from 'chart.js';
 
 // 手動註冊所有必要的控制器、元素、插件等
@@ -19,19 +19,26 @@ const currentPageAna = ref(1);
 const itemsPerPageAna = 10; // 每頁呈現10筆
 
 // 從後端獲取資料
-const fetchRecords= async()=>{
-    try{
-        const response= await axios.get('http://localhost:3000/SecondServer/getPercentage');
-        console.log(response.data); // 添加此行來檢查返回的數據
-        console.log(response.data.results);
-        records.value= response.data.results;
-
-        // 在獲取數據後生成圓餅圖
-        createPieChart();
-    }catch(error){
-        console.error('fail to fetch getPercentage', error);
+// 重新計算總頁數並檢查當前頁數
+const updatePagination = () => {
+    const totalPages = Math.ceil(records.value.length / itemsPerPageAna);
+    if (currentPageAna.value > totalPages) {
+        currentPageAna.value = totalPages; // 防止頁數超過總頁數
     }
-}
+};
+
+const fetchRecords = async () => {
+    try {
+        const response = await axios.get('http://localhost:3000/SecondServer/getPercentage');
+        records.value = response.data.results;
+        await nextTick(); // 確保 DOM 完全更新
+        updatePagination();        
+        createPieChart(); // 更新圖表
+    } catch (error) {
+        console.error('Error fetching records:', error);
+    }
+};
+
 
 // 提交表單-計算收益
 const submitForm = async()=>{
@@ -111,8 +118,18 @@ const createPieChart = ()=>{
         labels: records.value.map(record => record.code), // ETF code
         datasets : [{
             data: records.value.map(record => record.price_percentage), // 百分比data
-            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
-
+            backgroundColor: [
+                '#FF6384', // 顏色 1
+                '#36A2EB', // 顏色 2
+                '#FFCE56', // 顏色 3
+                '#4BC0C0', // 顏色 4
+                '#9966FF', // 顏色 5
+                '#FF9F40', // 顏色 6
+                '#4BC0C0', // 顏色 7
+                '#FF6384', // 顏色 8
+                '#36A2EB', // 顏色 9
+                '#FFCE56'  // 顏色 10
+            ],
         }]
     };
 
@@ -145,25 +162,29 @@ const createPieChart = ()=>{
     });
 };
 
-onMounted(()=>{
-    fetchRecords().then(()=>{
-        createPieChart(); // 在數據加載完成後生成圓餅圖
-    });
-    fetchRecordsRevenue();
+onMounted(async () => {
+    await fetchRecords(); // 確保資料加載完畢
+    createPieChart(); // 繪製圖表
+
+    await fetchRecordsRevenue(); // 獲取收益紀錄
 
     eventBusAnalysis.value.addEventListener('updateAnalysis', async () => {
-    await fetchRecords(); // 獲取最新數據
+        console.log('updateAnalysis event triggered');
+        await fetchRecords(); // 獲取最新數據
+        updatePagination();  // 確保頁面數據更新
+        createPieChart(); // 重新繪製圖表
     });
 
     eventBusPhoto.value.addEventListener('updatePhoto', async () => {
-    await fetchRecords(); // 獲取最新數據
-    createPieChart(); // 然後生成圓餅圖
+        console.log('updatePhoto event triggered');
+        fetchRecords(); // 獲取最新數據，若不需要等待，則刪除 await
+        updatePagination();  // 確保頁面數據更新
+        createPieChart(); // 重新繪製圖表
     });
-});
 
-onUnmounted(()=>{
-    eventBusAnalysis.value.removeEventListener('updateAnalysis',fetchRecords);
-    eventBusPhoto.value.removeEventListener('updatePhoto', createPieChart);
+    eventBusAllRevenue.value.addEventListener('updateAllRevenue', async() =>{
+        await fetchRecordsRevenue();
+    });
 });
 </script>
 
@@ -235,7 +256,7 @@ onUnmounted(()=>{
         height: 350px;
         position: relative;
         top: -1452px;
-        left: 42%;
+        left: 51%;
         border-style: double;
         border-width: 5px;
     }
@@ -262,7 +283,7 @@ onUnmounted(()=>{
         height: 350px;
         position: relative;
         top: -2111px;
-        left: 63%;
+        left: 73%;
         border-style: double;
         border-width: 5px;
     }
@@ -297,7 +318,7 @@ onUnmounted(()=>{
     .photo{
         position: relative;
         top: -2150px;
-        left: 450px;
+        left: 650px;
 
     }
 

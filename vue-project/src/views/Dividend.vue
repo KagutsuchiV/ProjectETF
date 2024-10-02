@@ -3,6 +3,7 @@
 import axios from 'axios';
 import {ref, onMounted,onUnmounted, watch, computed} from 'vue';
 import { useRouter } from 'vue-router';
+import { eventBusAllRevenue } from './eventBus';
 
   // 滑鼠事件
 let buttonA = ref("background-color: white");
@@ -74,6 +75,7 @@ const fetchRecords =async ()=>{
     try{
         const response=await axios.get('http://localhost:3000/getDividends');
         records.value=response.data.results;
+        eventBusAllRevenue.value.dispatchEvent(new Event('updateAllRevenue'));
     }catch(error){
         console.error('Failed to fetch getDividends', error);
     }
@@ -182,6 +184,7 @@ onMounted(()=>{
         height: 350px;
         position: relative;
         top: -702px;
+        left: 7%;
         border-style: double;
         border-width: 5px;
     }
@@ -208,7 +211,7 @@ onMounted(()=>{
         height: 350px;
         position: relative;
         top: -1061px;
-        left: 21%;
+        left: 29%;
         border-style: double;
         border-width: 5px;
     }
@@ -231,7 +234,7 @@ onMounted(()=>{
 
     .back{
         position: relative;
-        left: 40%;
+        left: 47.5%;
         top: -1040px;
         color: inherit;
         text-decoration: none;

@@ -183,7 +183,7 @@ onUnmounted(() => {
         height: 350px;
         position: relative;
         top: -364px;
-        left: 21%;
+        left: 29%;
         border-style: double;
         border-width: 5px;
     }
@@ -210,7 +210,7 @@ onUnmounted(() => {
         height: 350px;
         position: relative;
         top: -724px;
-        left: 42%;
+        left: 51%;
         border-style: double;
         border-width: 5px;
     }

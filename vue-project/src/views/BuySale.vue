@@ -4,7 +4,7 @@ import axios from 'axios';
 import {ref, watch} from 'vue';
 import { useRouter } from 'vue-router';
 
-import { eventBus,eventBusSale,eventBusAnalysis,eventBusPhoto } from './eventBus';
+import { eventBus,eventBusSale,eventBusAnalysis,eventBusPhoto,eventBusAllRevenue } from './eventBus';
 
 // 建立年份選項
 const years =ref(Array.from({length: 2030 - 1980 + 1}, (v,i) => 1980 + i));
@@ -95,7 +95,7 @@ const submitForm =async () =>{
       eventBusSale.value.dispatchEvent(new Event('updateRecordSales'));
       eventBusAnalysis.value.dispatchEvent(new Event('updateAnalysis'));
       eventBusPhoto.value.dispatchEvent(new Event('updatePhoto'));
-
+      eventBusAllRevenue.value.dispatchEvent(new Event('updateAllRevenue'));
 
       router.push('/ERA');
 
@@ -152,7 +152,8 @@ const submitForm =async () =>{
     width: 20%;
     height: 350px;
     position: relative;
-    top: -5px;
+    top: -4px;
+    left: 7%;
     border-style: double;
     border-width: 5px;
   }
