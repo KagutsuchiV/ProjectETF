@@ -72,7 +72,7 @@ onMounted(() => {
 
 <template>
     <div class="search">
-        <div class="hot">人氣ETF-排行榜</div>
+        <div class="hot">六大人氣ETF-排行榜 (Bonus 績優推薦)</div>
 
         <div class="first">
             <div class="forCenter">
@@ -234,7 +234,7 @@ onMounted(() => {
         left: 1100px;
         width: 220px;
         height: 240px;
-        border-right: 2px solid black;
+        border-right: 6px double black;
     }
 
     .bonus{
