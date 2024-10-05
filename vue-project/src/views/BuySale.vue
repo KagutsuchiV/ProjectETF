@@ -94,8 +94,9 @@ const submitForm =async () =>{
       eventBus.value.dispatchEvent(new Event('updateRecords'));
       eventBusSale.value.dispatchEvent(new Event('updateRecordSales'));
       eventBusAnalysis.value.dispatchEvent(new Event('updateAnalysis'));
-      eventBusPhoto.value.dispatchEvent(new Event('updatePhoto'));
+      // eventBusPhoto.value.dispatchEvent(new Event('updatePhoto'));
       eventBusAllRevenue.value.dispatchEvent(new Event('updateAllRevenue'));
+      console.log('updateAnalysis event dispatched');
 
       router.push('/ERA');
 

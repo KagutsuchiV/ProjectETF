@@ -1,6 +1,6 @@
 <script setup>
 import axios from 'axios';
-import {ref, onMounted, onUnmounted, computed} from 'vue';
+import {ref, onMounted, onUnmounted, computed, nextTick} from 'vue';
 
 import { eventBusAnalysis, eventBusPhoto, eventBusAllRevenue } from './eventBus';
 import {Chart, registerables} from 'chart.js';
@@ -30,14 +30,19 @@ const updatePagination = () => {
 const fetchRecords = async () => {
     try {
         const response = await axios.get('http://localhost:3000/SecondServer/getPercentage');
-        records.value = response.data.results;
+        records.value = response.data.results || []; // 確保這是反應性的
+        
+        // 這裡不需要清空舊數據，直接更新即可
+        console.log('Fetched Records:', records.value); // 確認獲取的新數據
+
         await nextTick(); // 確保 DOM 完全更新
-        updatePagination();        
-        createPieChart(); // 更新圖表
+        updatePagination(); // 更新分頁
+
     } catch (error) {
         console.error('Error fetching records:', error);
     }
 };
+
 
 
 // 提交表單-計算收益
@@ -102,7 +107,7 @@ const fetchRecordsRevenue = async()=>{
 // 創建圓餅圖
 let pieChartInstance;
 
-const createPieChart = ()=>{
+const createPieChart = ()=>{ 
     if (pieChartInstance) {
         pieChartInstance.destroy(); // 銷毀舊的圖表實例
     }
@@ -165,31 +170,29 @@ const createPieChart = ()=>{
 onMounted(async () => {
     await fetchRecords(); // 確保資料加載完畢
     createPieChart(); // 繪製圖表
-
     await fetchRecordsRevenue(); // 獲取收益紀錄
 
+    // 監聽分析更新事件
     eventBusAnalysis.value.addEventListener('updateAnalysis', async () => {
-        console.log('updateAnalysis event triggered');
+        console.log('Update Analysis Event Triggered'); // 確認事件被觸發
         await fetchRecords(); // 獲取最新數據
-        updatePagination();  // 確保頁面數據更新
-        createPieChart(); // 重新繪製圖表
+        console.log('Fetched Records:', records.value); // 檢查是否成功更新
+        updatePagination(); // 確保頁面數據更新
+        createPieChart(); // 重新繪製圖表  
     });
 
-    eventBusPhoto.value.addEventListener('updatePhoto', async () => {
-        console.log('updatePhoto event triggered');
-        fetchRecords(); // 獲取最新數據，若不需要等待，則刪除 await
-        updatePagination();  // 確保頁面數據更新
-        createPieChart(); // 重新繪製圖表
-    });
-
-    eventBusAllRevenue.value.addEventListener('updateAllRevenue', async() =>{
+    // 監聽所有收益更新事件
+    eventBusAllRevenue.value.addEventListener('updateAllRevenue', async () => {
+        console.log('Update All Revenue Event Triggered'); // 確認事件被觸發
         await fetchRecordsRevenue();
     });
 });
+
+
 </script>
 
 <template>
-    <div class="areaAnalysis">
+    <!-- <div class="areaAnalysis">
         <div class="titleAnalysis">計算你的存股百分比 (成本)</div>
         <div class="forCenterAnalysis">
             <table>
@@ -210,7 +213,7 @@ onMounted(async () => {
         <button @click="prevPageAna" :disabled="currentPageAna===1" style="position: absolute; top: 320px; left: 10px; z-index: 9995;">Prev</button>
         <button @click="nextPageAna" :disabled="currentPageAna===totalPagesAna" style="position: absolute; top: 320px; left: 300px; z-index: 9994;">Next</button>
         <p style="position: absolute; top: 305px; left: 150px">Page {{ currentPageAna }} of {{ totalPagesAna }}</p>
-    </div>
+    </div> -->
 
 
 <!-- 添加canvas元素來顯示圓餅圖 -->
@@ -282,8 +285,8 @@ onMounted(async () => {
         width: 20%;
         height: 350px;
         position: relative;
-        top: -2111px;
-        left: 73%;
+        top: -1753px;
+        left: 51%;
         border-style: double;
         border-width: 5px;
     }
@@ -317,7 +320,7 @@ onMounted(async () => {
 
     .photo{
         position: relative;
-        top: -2150px;
+        top: -1655px;
         left: 650px;
 
     }

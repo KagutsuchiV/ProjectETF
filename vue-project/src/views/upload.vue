@@ -28,10 +28,14 @@ const uploadAvatar =async()=>{
       },
     });
     alert('上傳成功');
+
+    // 成功上傳後自動重整頁面
+    window.location.reload();
   }catch(error){
     errorMessage.value="上傳失敗，請稍後再試";
   }
 };
+
 
 </script>
 
