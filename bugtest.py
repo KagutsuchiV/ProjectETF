@@ -5,8 +5,8 @@ import time
 
 urls={
     '0050': 'https://tw.stock.yahoo.com/quote/0050.TW/profile',
-    '00878': 'https://tw.stock.yahoo.com/quote/00878.TW/profile',
     '0056': 'https://tw.stock.yahoo.com/quote/0056.TW/profile',
+    '00878': 'https://tw.stock.yahoo.com/quote/00878.TW/profile',
     '00679B': 'https://tw.stock.yahoo.com/quote/00679B.TW/profile',        
     '00929': 'https://tw.stock.yahoo.com/quote/00929.TW/profile',
     '00919': 'https://tw.stock.yahoo.com/quote/00919.TW/profile',

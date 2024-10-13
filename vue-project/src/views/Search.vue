@@ -79,7 +79,7 @@ onMounted(() => {
                 <div style="font-size: 30px; font-weight: bold; padding-bottom: 5px; padding-top: 10px;">0050</div>
                 <div style="font-size: 24px; font-weight: bold; padding-bottom: 10px;">元大台灣50</div>
                 <div style="padding-bottom: 5px;" :style="{ color: sixLighting ? 'red' : 'black', fontWeight: sixLighting ? 'bold' : 'normal' }">成交價: {{ sixPrice[0] }}</div>
-                <div style="padding-bottom: 5px;">資產規模: {{ sixAsset[0] }}百萬</div>
+                <div style="padding-bottom: 5px;">資產規模: {{ sixAsset[0] ? sixAsset[0].slice(0, -3) : '無效數據'}}百萬</div>
                 <div style="padding-bottom: 20px;">成立日: {{ sixDate[0] }}</div>
                 <div class="link" :style="styles.first.value" @mouseover="ChangeColor('first')" @mouseleave="ReturnColor('first')"><a href="https://tw.stock.yahoo.com/quote/0050.TW" target="blank">相關連結-外部網站</a></div>
             </div>
@@ -87,10 +87,10 @@ onMounted(() => {
 
         <div class="second">
             <div class="forCenter">
-                <div style="font-size: 30px; font-weight: bold; padding-bottom: 5px; padding-top: 10px;">00878</div>
-                <div style="font-size: 24px; font-weight: bold; padding-bottom: 10px;">國泰永續高股息</div>
+                <div style="font-size: 30px; font-weight: bold; padding-bottom: 5px; padding-top: 10px;">0056</div>
+                <div style="font-size: 24px; font-weight: bold; padding-bottom: 10px;">元大高股息</div>
                 <div style="padding-bottom: 5px;" :style="{ color: sixLighting ? 'red' : 'black', fontWeight: sixLighting ? 'bold' : 'normal' }">成交價: {{ sixPrice[1] }}</div>
-                <div style="padding-bottom: 5px;">資產規模: {{ sixAsset[1] }}百萬</div>
+                <div style="padding-bottom: 5px;">資產規模: {{ sixAsset[1] ? sixAsset[1].slice(0, -3) : '無效數據'  }}百萬</div>
                 <div style="padding-bottom: 20px;">成立日: {{ sixDate[1] }}</div>
                 <div class="link" :style="styles.second.value" @mouseover="ChangeColor('second')" @mouseleave="ReturnColor('second')"><a href="https://tw.stock.yahoo.com/quote/00878.TW" target="blank">相關連結-外部網站</a></div>
             </div>
@@ -98,10 +98,10 @@ onMounted(() => {
    
         <div class="third">
             <div class="forCenter">
-                <div style="font-size: 30px; font-weight: bold; padding-bottom: 5px; padding-top: 10px;">0056</div>
-                <div style="font-size: 24px; font-weight: bold; padding-bottom: 10px;">元大高股息</div>
+                <div style="font-size: 30px; font-weight: bold; padding-bottom: 5px; padding-top: 10px;">00878</div>
+                <div style="font-size: 24px; font-weight: bold; padding-bottom: 10px;">國泰永續高股息</div>
                 <div style="padding-bottom: 5px;" :style="{ color: sixLighting ? 'red' : 'black', fontWeight: sixLighting ? 'bold' : 'normal' }">成交價: {{ sixPrice[2] }}</div>
-                <div style="padding-bottom: 5px;">資產規模: {{ sixAsset[2] }}百萬</div>
+                <div style="padding-bottom: 5px;">資產規模: {{ sixAsset[2] ? sixAsset[2].slice(0, -3) : '無效數據'  }}百萬</div>
                 <div style="padding-bottom: 20px;">成立日: {{ sixDate[2] }}</div>
                 <div class="link" :style="styles.third.value" @mouseover="ChangeColor('third')" @mouseleave="ReturnColor('third')"><a href="https://tw.stock.yahoo.com/quote/0056.TW" target="blank">相關連結-外部網站</a></div>
             </div>
@@ -112,7 +112,7 @@ onMounted(() => {
                 <div style="font-size: 30px; font-weight: bold; padding-bottom: 5px; padding-top: 10px;">00679B</div>
                 <div style="font-size: 24px; font-weight: bold; padding-bottom: 10px;">元大美債20年</div>
                 <div style="padding-bottom: 5px;" :style="{ color: sixLighting ? 'red' : 'black', fontWeight: sixLighting ? 'bold' : 'normal' }">成交價: {{ sixPrice[3] }}</div>
-                <div style="padding-bottom: 5px;">資產規模: {{ sixAsset[3] }}百萬</div>
+                <div style="padding-bottom: 5px;">資產規模: {{ sixAsset[3] ? sixAsset[3].slice(0, -3) : '無效數據'  }}百萬</div>
                 <div style="padding-bottom: 20px;">成立日: {{ sixDate[3] }}</div>
                 <div class="link" :style="styles.fourth.value" @mouseover="ChangeColor('fourth')" @mouseleave="ReturnColor('fourth')"><a href="https://tw.stock.yahoo.com/quote/00679B.TW" target="blank">相關連結-外部網站</a></div>
             </div>
@@ -123,7 +123,7 @@ onMounted(() => {
                 <div style="font-size: 30px; font-weight: bold; padding-bottom: 5px; padding-top: 10px;">00929</div>
                 <div style="font-size: 24px; font-weight: bold; padding-bottom: 10px;">復華台灣科技優息</div>
                 <div style="padding-bottom: 5px;" :style="{ color: sixLighting ? 'red' : 'black', fontWeight: sixLighting ? 'bold' : 'normal' }">成交價: {{ sixPrice[4] }}</div>
-                <div style="padding-bottom: 5px;">資產規模: {{ sixAsset[4] }}百萬</div>
+                <div style="padding-bottom: 5px;">資產規模: {{ sixAsset[4] ? sixAsset[4].slice(0, -3) : '無效數據'  }}百萬</div>
                 <div style="padding-bottom: 20px;">成立日: {{ sixDate[4] }}</div>
                 <div class="link" :style="styles.fifth.value" @mouseover="ChangeColor('fifth')" @mouseleave="ReturnColor('fifth')"><a href="https://tw.stock.yahoo.com/quote/00929.TW" target="blank">相關連結-外部網站</a></div>
             </div>
@@ -134,7 +134,7 @@ onMounted(() => {
                 <div style="font-size: 30px; font-weight: bold; padding-bottom: 5px; padding-top: 10px;">00919</div>
                 <div style="font-size: 24px; font-weight: bold; padding-bottom: 10px;">群益台灣精選高息</div>
                 <div style="padding-bottom: 5px;" :style="{ color: sixLighting ? 'red' : 'black', fontWeight: sixLighting ? 'bold' : 'normal' }">成交價: {{ sixPrice[5] }}</div>
-                <div style="padding-bottom: 5px;">資產規模: {{ sixAsset[5] }}百萬</div>
+                <div style="padding-bottom: 5px;">資產規模: {{ sixAsset[5] ? sixAsset[5].slice(0, -3) : '無效數據' }}百萬</div>
                 <div style="padding-bottom: 20px;">成立日: {{ sixDate[5] }}</div>
                 <div class="link" :style="styles.sixth.value" @mouseover="ChangeColor('sixth')" @mouseleave="ReturnColor('sixth')"><a href="https://tw.stock.yahoo.com/quote/00919.TW" target="blank">相關連結-外部網站</a></div>
             </div>
@@ -145,7 +145,7 @@ onMounted(() => {
                 <div style="font-size: 30px; font-weight: bold; padding-bottom: 5px; padding-top: 10px; color: red;">★00915★</div>
                 <div style="font-size: 24px; font-weight: bold; padding-bottom: 10px; color: red">凱基優選高股息30</div>
                 <div style="padding-bottom: 5px;" :style="{ color: sixLighting ? 'red' : 'black', fontWeight: sixLighting ? 'bold' : 'normal' }">成交價: {{ sixPrice[6] }}</div>
-                <div style="padding-bottom: 5px;">資產規模: {{ sixAsset[6] }}百萬</div>
+                <div style="padding-bottom: 5px;">資產規模: {{ sixAsset[6] ? sixAsset[6].slice(0, -3) : '無效數據'  }}百萬</div>
                 <div style="padding-bottom: 20px;">成立日: {{ sixDate[6] }}</div>
                 <div class="link" :style="styles.bonus.value" @mouseover="ChangeColor('bonus')" @mouseleave="ReturnColor('bonus')"><a href="https://tw.stock.yahoo.com/quote/00915.TW" target="blank">相關連結-外部網站</a></div>
             </div>

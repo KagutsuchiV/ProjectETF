@@ -150,7 +150,7 @@ const createPieChart = ()=>{
                 },
                 title: {
                 display: true,    // 顯示標題
-                text: '存股百分比圓餅圖',  // 設定標題文字
+                text: '存股百分比圓餅圖 (成本)',  // 設定標題文字
                 font: {
                     size: 18      // 設定標題文字大小
                 },
