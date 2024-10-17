@@ -315,7 +315,7 @@ onMounted(async () => {
         background-color: #444444;
         color: white;
         height: 40px;
-        width: 380px;        
+        width: 100%;        
     }
 
     .photo{

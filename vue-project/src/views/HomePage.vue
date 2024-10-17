@@ -13,11 +13,26 @@
     //   Apply.value="background-color: white";
     // };
 
-    // 設定滾軸
+
+    // 設定滾動條顯示/隱藏-本地視窗高: 910~911
+    function adjustScroll() {
+      // 檢查視窗的高度
+      if (window.innerHeight < 910) {
+        document.body.style.overflow = "auto"; // 顯示滾動條
+      } else {
+        document.body.style.overflow = "hidden"; // 隱藏滾動條
+      }
+    }
+
+    // 當 DOM 內容加載完成後執行一次
     document.addEventListener("DOMContentLoaded", function() {
-      document.body.style.height = `${window.innerHeight}px`;
-      document.body.style.overflow = "hidden"; // 隱藏滾動條
+      adjustScroll(); // 初始檢查
     });
+
+    // 當視窗大小改變時執行調整
+    window.addEventListener("resize", adjustScroll);
+
+
 
     let styles={
       Apply: ref("background-color: white"),
@@ -74,6 +89,7 @@
 
     <div class="AL">
       <div class="member">會員專區</div>
+      <div class="CenterM">
         <router-link to="/ApplyLogin" v-if="!user" class="Apply" @mouseover="ChangeColor('Apply')" @mouseleave="ReturnColor('Apply')" :style="styles.Apply.value">申請帳號</router-link><br/>
         <router-link to="/Login" v-if="!user" class="Login" @mouseover="ChangeColor('Login')" @mouseleave="ReturnColor('Login')" :style="styles.Login.value">前往登入</router-link>
       
@@ -86,6 +102,7 @@
           </div>
           <button @click="logout" class="logout" @mouseover="ChangeColor('Logout')" @mouseleave="ReturnColor('Logout')" :style="styles.Logout.value">登出</button>
         </div>
+      </div>
     </div>
 
     <SearchComp></SearchComp>
@@ -100,7 +117,6 @@
 </script>
   
 <style scoped>
-
   .TOP{
       background-color: #dddddd; 
       border-style: double;
@@ -112,7 +128,7 @@
       }
   .AL{
       background-color: #dddddd;
-      width: 300px;
+      width: 16%;
       height: 300px;
       position: relative;
       top: 20px;
@@ -128,6 +144,12 @@
       text-align: center;
       line-height: 60px;
       height: 60px;
+
+  }
+  .CenterM{
+    display: flex;          /* 使用 Flexbox */
+    flex-direction: column; /* 垂直排列元素 */
+    align-items: center;    /* 水平置中 */
   }
   .Apply{
     font-size: 32px;
@@ -137,9 +159,9 @@
     border-style: solid;
     border-width: 2px;
     position: relative;
-    top: 40px;
-    left: 60px;
+    top: 20px;
     padding: 20px;
+    z-index: 99;
   }
   .Login{
     font-size: 32px;
@@ -149,9 +171,9 @@
     border-style: solid;
     border-width: 2px;
     position: relative;
-    top: 100px;
-    left: 60px;
+    top: 30px;
     padding: 20px;
+    z-index: 99;
   }
   .welcome{
     font-size: 20px;
@@ -169,7 +191,6 @@
     border-width: 2px;
     padding: 10px;
     position: relative;
-    left: 80px;
     top: 10px
   }
 
@@ -182,7 +203,6 @@
     border-width: 2px;
     padding: 10px;
     position: relative;
-    left: 78px;
     top: 40px;
   }
 
@@ -199,7 +219,7 @@
     border-width: 2px;
     cursor: pointer;
     position: relative;
-    left: 110px;
+    left: 25%;
     top: 60px;
   }
 </style>
