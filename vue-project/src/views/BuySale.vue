@@ -134,14 +134,31 @@ const submitForm =async () =>{
             <div>價格 <input v-model="price" required pattern="\d{1,12}" placeholder="單張交易金額，不含手續費" style="border-radius: 5px; margin-top: 10px; height: 20px;"/></div>
             <div v-if="mode=='sale'">收益<input v-model="revenue" required pattern="-?\d{1,12}" placeholder="總收益金額，不含手續費" style="border-radius: 5px; margin-top: 10px; height: 20px;"/></div>
             <div>手續費 <input v-model="fee" required pattern="\d{1,10}" style="border-radius: 5px; margin-top: 10px; height: 20px;"/></div>
-            <button type="submit" :style="buttonA" style="cursor: pointer; margin-top: 15px;">送出</button>
+            <button type="submit" class="buttonBS" :style="buttonA" style="cursor: pointer; margin-top: 15px;">送出</button>
         </form>
       </div>
 
     </div>
 </template>
-  
-  <script>
+
+<style>
+/* 寬度: 1919-1920 */
+  @media (max-width: 1800px) {
+    .areaA{
+        height: 300px !important;
+    }
+    .forCenterA{
+      font-size: 12px;
+    }
+    .buttonBS{
+      position: fixed;
+      top: 125px;
+      left: 285px;
+    }
+  }
+</style>
+
+<script>
   export default {
     name: 'ERAPage'
   }

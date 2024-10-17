@@ -3,7 +3,7 @@
     import axios from "axios";
     import FocusComp from "./Focus.vue";
     import SearchComp from "./Search.vue";
-    import {onMounted, ref} from "vue";
+    import {onMounted, ref, onBeforeUnmount } from "vue";
 
     // let Apply = ref("background-color: white");
     // let ChangeColor=function(){
@@ -13,26 +13,8 @@
     //   Apply.value="background-color: white";
     // };
 
-
-    // 設定滾動條顯示/隱藏-本地視窗高: 910~911
-    function adjustScroll() {
-      // 檢查視窗的高度
-      if (window.innerHeight < 910) {
-        document.body.style.overflow = "auto"; // 顯示滾動條
-      } else {
-        document.body.style.overflow = "hidden"; // 隱藏滾動條
-      }
-    }
-
-    // 當 DOM 內容加載完成後執行一次
-    document.addEventListener("DOMContentLoaded", function() {
-      adjustScroll(); // 初始檢查
-    });
-
-    // 當視窗大小改變時執行調整
-    window.addEventListener("resize", adjustScroll);
-
-
+    // 設定滾動軸
+    document.body.style.overflow = "hidden";
 
     let styles={
       Apply: ref("background-color: white"),

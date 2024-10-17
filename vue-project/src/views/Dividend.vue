@@ -145,7 +145,7 @@ onMounted(()=>{
     <div class="areaDRecord">
         <div class="titleDRecord">Dividend Record</div>
         <div class="forCenterDRecord">
-            <table>
+            <table class="forCenterDRecordT">
                 <thead>
                     <tr>
                         <th>日期</th>
@@ -162,16 +162,37 @@ onMounted(()=>{
                 </tbody>
             </table>
         </div>
-        <button @click="prevPageD" :disabled="currentPageD===1" style="position: absolute; z-index: 9996; top:320px; left: 10px">Prev</button>
-        <button @click="nextPageD" :disabled="currentPageD===totalPagesD" style="position: absolute; z-index: 9995; top: 320px; left: 300px;">Next</button>
-        <p style="position: absolute; top: 305px; left: 150px">Page {{ currentPageD }} of {{ totalPagesD }}</p>
+        <button @click="prevPageD" :disabled="currentPageD===1" style="position: absolute; z-index: 9996; top:91%; left: 5%">Prev</button>
+        <button @click="nextPageD" :disabled="currentPageD===totalPagesD" style="position: absolute; z-index: 9995; top: 91%; left: 82%;">Next</button>
+        <p style="position: absolute; top: 87%; left: 40%">Page {{ currentPageD }} of {{ totalPagesD }}</p>
     </div>
 
 
     <router-link to="/" class="back" :style="back" @mouseover="ChangeColor" @mouseleave="ReturnColor">回首頁</router-link>
 </template>
-  
-  <script>
+
+<style>
+/* 寬度: 1919-1920 */
+  @media (max-width: 1800px) {
+    .areaDividend{
+        height: 300px !important;
+        top: -604px !important;
+    }
+    .forCenterDRecordT{
+        font-size: 12px;
+    }
+    .areaDRecord{
+        height: 300px !important;
+        top: -914px !important;
+    }
+    .back{
+        top: -980px !important;
+        left: 83% !important;
+    }
+  }
+</style>
+
+<script>
   export default {
     name: 'DividendPage'
   }
@@ -183,7 +204,7 @@ onMounted(()=>{
         width: 20%;
         height: 350px;
         position: relative;
-        top: -702px;
+        top: -704px;
         left: 7%;
         border-style: double;
         border-width: 5px;

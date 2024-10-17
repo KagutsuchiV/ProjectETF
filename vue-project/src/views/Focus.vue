@@ -29,6 +29,18 @@
     </div>
 </template>
 
+<style>
+/* 寬度: 1919-1920 */
+  @media (max-width: 1800px) {
+    .A{
+        font-size: 20px !important;
+    }
+    .focus{
+        font-size: 16px !important;
+    }
+  }
+</style>
+
 <style scoped>
     .focus{
         background-color: #dddddd;

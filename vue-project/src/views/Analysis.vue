@@ -252,6 +252,21 @@ onMounted(async () => {
 
 </template>
 
+<style>
+/* 寬度: 1919-1920 */
+@media (max-width: 1800px) {
+    .areaR{
+        height: 300px !important;
+        top: -1556px !important;
+    }
+    .photo{
+        top: -1455px !important;
+        width: "250" !important;
+        height: "250" !important;
+    }
+  }
+</style>
+
 <style scoped>
     .areaAnalysis{
         background-color: #dddddd;
@@ -321,7 +336,7 @@ onMounted(async () => {
     .photo{
         position: relative;
         top: -1655px;
-        left: 650px;
+        left: 36%;
 
     }
 

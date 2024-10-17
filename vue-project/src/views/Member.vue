@@ -38,6 +38,8 @@ onMounted(async () => {
   }
 });
 
+// 設定滾動軸
+document.body.style.overflow = "hidden";
 
 // 變更密碼
 const password=ref("");
@@ -155,6 +157,14 @@ let ReturnColor = function(){
      border-radius: 10px;
      padding: 10px;
      border-style: solid;
+  }
+
+  /* 寬度: 1919-1920 */
+  @media (max-width: 1800px) {
+    .back{
+        position: relative !important;
+        top: -600px !important;
+    }
   }
 
   .self{

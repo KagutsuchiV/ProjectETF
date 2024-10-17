@@ -111,7 +111,7 @@ onUnmounted(() => {
     <div class="areaBuy">
         <div class="titleBuy">ETF Buy Record</div>
         <div class="forCenterBuy">
-            <table>
+            <table class="forCenterBuyT">
             <thead>
                 <tr>
                     <th>日期</th>
@@ -132,15 +132,15 @@ onUnmounted(() => {
             </tbody>
         </table>
         </div>
-        <button @click="prevPageBuy" :disabled="currentPageBuy===1" style="position: absolute; top: 320px; left: 10px">Prev</button>
-        <button @click="nextPageBuy" :disabled="currentPageBuy===totalPagesBuy" style="z-index: 9999; position: absolute; top:320px; left: 300px">Next</button>
-        <p style="position: absolute; top: 305px; left: 150px">Page {{ currentPageBuy }} of {{ totalPagesBuy }}</p>
+        <button @click="prevPageBuy" :disabled="currentPageBuy===1" style="position: absolute; top: 91%; left: 5%">Prev</button>
+        <button @click="nextPageBuy" :disabled="currentPageBuy===totalPagesBuy" style="z-index: 9999; position: absolute; top:91%; left: 82%">Next</button>
+        <p style="position: absolute; top: 87%; left: 40%">Page {{ currentPageBuy }} of {{ totalPagesBuy }}</p>
     </div>
 
     <div class="areaSale">
         <div class="titleSale">ETF Sale Record</div>
         <div class="forCenterSale">
-            <table>
+            <table class="forCenterSaleT">
                 <thead>
                     <tr>
                         <th>日期</th>
@@ -163,14 +163,31 @@ onUnmounted(() => {
                 </tbody>
             </table>
         </div>
-        <button @click="prevPageSale" :disabled="currentPageSale===1" style="z-index: 9998; position: absolute; top:320px; left: 10px">Prev</button>
-        <button @click="nextPageSale" :disabled="currentPageSale===totalPagesSale" style="z-index: 9998; position: absolute; top: 320px; left: 300px">Next</button>
-        <p style="position: absolute; top: 305px; left: 150px">Page {{ currentPageSale }} of {{ totalPagesSale }}</p>
+        <button @click="prevPageSale" :disabled="currentPageSale===1" style="z-index: 9998; position: absolute; top:91%; left: 5%">Prev</button>
+        <button @click="nextPageSale" :disabled="currentPageSale===totalPagesSale" style="z-index: 9998; position: absolute; top: 91%; left: 82%">Next</button>
+        <p style="position: absolute; top: 87%; left: 40%">Page {{ currentPageSale }} of {{ totalPagesSale }}</p>
     </div>
 
 </template>
-  
-  <script>
+
+<style>
+/* 寬度: 1919-1920 */
+  @media (max-width: 1800px) {
+    .areaBuy{
+        height: 300px !important;
+        top: -314px !important;
+    }
+    .forCenterBuyT, .forCenterSaleT{
+        font-size: 12px !important;
+    }
+    .areaSale{
+        height: 300px !important;
+        top: -624px !important;
+    }
+  }
+</style>
+
+<script>
   export default {
     name: 'RecordPage'
   }
