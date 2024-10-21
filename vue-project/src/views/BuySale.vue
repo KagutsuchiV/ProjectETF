@@ -143,7 +143,7 @@ const submitForm =async () =>{
 
 <style>
 /* 寬度: 1919-1920 */
-  @media (max-width: 1800px) {
+  @media (max-width: 1910px) {
     .areaA{
         height: 300px !important;
     }
@@ -152,8 +152,8 @@ const submitForm =async () =>{
     }
     .buttonBS{
       position: fixed;
-      top: 125px;
-      left: 285px;
+      top: 14%;
+      left: 18%;
     }
   }
 </style>

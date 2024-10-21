@@ -164,6 +164,7 @@ let ReturnColor = function(){
     .back{
         position: relative !important;
         top: -600px !important;
+        left: 48% !important;
     }
   }
 
