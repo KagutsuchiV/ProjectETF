@@ -99,6 +99,17 @@ import {ref} from 'vue';
   }
 </script>
 
+<style>
+  /* 寬度: 1919-1920 */
+  /* @media (max-width: 1800px) {
+    .back{
+        position: relative !important;
+        top: -600px !important;
+        left: 48% !important;
+    }
+  } */
+</style>
+
 <style scoped>
   html, body{
   margin: 0;
@@ -168,17 +179,17 @@ import {ref} from 'vue';
     cursor: pointer; 
   }
   .back{
-     position: relative;
-     left: 48%;
-     transform: translateX(-50%);
-     top: 150px;
-     color: inherit;
-     text-decoration: none;
-     font-size: 24px;
-     border-radius: 10px;
-     padding: 10px;
-     border-style: solid;
+    position: fixed;
+    top: 550px;
+    left: 48%;
+    color: inherit !important;
+    text-decoration: none !important;
+    font-size: 24px;
+    border-radius: 10px;
+    padding: 10px;
+    border-style: solid;
   }
+
   .error{
     color: red;
     text-align: center;

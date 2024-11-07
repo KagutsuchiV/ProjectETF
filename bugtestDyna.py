@@ -14,7 +14,7 @@ chrome_options.add_argument("--disable-gpu")  # 禁用 GPU 渲染，加快執行
 chrome_options.add_argument("--no-sandbox")
 
 # 這裡要設定 chromedriver 的路徑
-chrome_driver_path = "D:/program 2024/ETFProject/chromedriver-win64/chromedriver.exe"  # 替換為 chromedriver 的實際路徑
+chrome_driver_path = "D:/program-2024/ProjectETF/chromedriver-win64/chromedriver.exe"  # 替換為 chromedriver 的實際路徑
 
 service = Service(chrome_driver_path)
 

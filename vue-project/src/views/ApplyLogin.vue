@@ -146,12 +146,11 @@
     font-weight: bold;
   }
   .back{
-    position: relative;
+    position: fixed;
+    top: 650px;
     left: 48%;
-    transform: translateX(-50%);
-    top: 150px;
-    color: inherit;
-    text-decoration: none;
+    color: inherit !important;
+    text-decoration: none !important;
     font-size: 24px;
     border-radius: 10px;
     padding: 10px;

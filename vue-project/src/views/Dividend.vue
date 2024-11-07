@@ -173,7 +173,7 @@ onMounted(()=>{
 
 <style>
 /* 寬度: 1919-1920 */
-  @media (max-width: 1910px) {
+  @media (max-width: 1800px) {
     .areaDividend{
         height: 300px !important;
         top: -604px !important;
@@ -255,8 +255,8 @@ onMounted(()=>{
 
     .back{
         position: relative;
-        left: 47.5%;
-        top: -1040px;
+        left: 83%;
+        top: -1140px;
         color: inherit;
         text-decoration: none;
         font-size: 24px;
