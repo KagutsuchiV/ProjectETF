@@ -152,7 +152,7 @@ const submitForm =async () =>{
     }
     .buttonBS{
       position: fixed;
-      top: 14%;
+      top: 16%;
       left: 18%;
     }
   }

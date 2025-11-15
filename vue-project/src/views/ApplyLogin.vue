@@ -147,9 +147,9 @@
   }
   .back{
     position: relative;
-    left: 48%;
-    transform: translateX(-50%);
-    top: 150px;
+     left: 48%;
+     transform: translateX(-50%);
+     top: 150px;
     color: inherit;
     text-decoration: none;
     font-size: 24px;

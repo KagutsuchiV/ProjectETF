@@ -185,8 +185,11 @@ onMounted(()=>{
         height: 300px !important;
         top: -914px !important;
     }
+  }
+
+  @media (max-width: 2000px){
     .back{
-        top: -980px !important;
+        top: -1040px !important;
         left: 83% !important;
     }
   }

@@ -223,13 +223,13 @@ onMounted(async () => {
 
 
 <div class="areaR">
-    <div class="titleR">計算你目前的收益</div>
+    <div class="titleR">Calculate ETF Price Difference</div>
     <div class="forCenterR">
         <form @submit.prevent="submitForm">
             <div style="margin-top: 40px;">目前總價差 <input  v-model="price" required pattern="\d{1,12}" placeholder="" /></div>
             <button type="submit" style="margin-top: 10px;">計算收益</button>
         </form>
-        <div style="margin-top: 20px;" class="titleAR">總收益紀錄</div>
+        <div style="margin-top: 20px;" class="titleAR">Total Revenue Record</div>
         <table>
             <thead>
                 <tr>

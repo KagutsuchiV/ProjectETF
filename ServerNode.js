@@ -71,7 +71,7 @@ const ThirdServer =require('./ThirdServer')(pool);
 app.use('/ThirdServer', ThirdServer);
 
 // 第四伺服器 需在MySQL連接池之後
-const FourthServer = require('./FourthServer'); // 注意這裡沒有呼叫()，因為你的模組並未導出函數
+const FourthServer = require('./FourthServer'); // 注意這裡沒有呼叫()，因為模組並未導出函數
 app.use('/FourthServer', FourthServer); // 使用 FourthServer 路由
 
 // 檢查帳號是否存在
