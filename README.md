@@ -174,8 +174,9 @@ SET time_zone = '+08:00';
 **確認chromedriver.exe檔的路徑是否為"D:/program 2024/ETFProject/chromedriver-win64/chromedriver.exe"，若非此路徑，請至bugtestDyna.py檔中的第17行進行修改**
 3. 開啟python爬蟲-2 python bugtest.py (site: ETFProject)
 4. 開啟前端伺服器npm run dev (site: ETFProject/vue-project)
-**※ 若畫面排版異常，請使用「crl + 與 crl - 」來調整畫面縮放比例 (針對電腦螢幕大小的響應式網頁已更新，請盡量使用電腦開啟本專案網頁)**
+**※ 若畫面排版異常，請使用「crl + 與 crl - 」來調整畫面縮放比例**
 
 **目錄結構** 
 
 可參考TreeStructureOutput.txt (site: ETFProject)
+
